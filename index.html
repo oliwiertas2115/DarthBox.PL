@@ -5,103 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarthBox.PL — Serwer Minecraft</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ff8c00;
-            --primary-glow: rgba(255, 140, 0, 0.5);
+            --primary-glow: rgba(255, 140, 0, 0.4);
             --bg-deep: #080808;
-            --bg-card: #121212;
+            --bg-card: #111111;
             --text-main: #f0f0f0;
             --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: default; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
 
-        /* --- BACKGROUND DECORATIONS --- */
+        /* --- BACKGROUND --- */
         .bg-glow {
-            position: fixed; top: -10%; left: 50%; transform: translateX(-50%);
-            width: 80vw; height: 50vh; background: radial-gradient(circle, rgba(255,140,0,0.15) 0%, rgba(8,8,8,0) 70%);
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; height: 60vh; background: radial-gradient(circle, rgba(255,140,0,0.1) 0%, rgba(8,8,8,0) 70%);
             z-index: -1; pointer-events: none;
         }
 
-        .bg-skin-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-        .bg-skin { position: absolute; height: 90vh; opacity: 0.25; animation: float 6s ease-in-out infinite; }
+        .bg-skin {
+            position: fixed; height: 80vh; opacity: 0.15; z-index: -1; pointer-events: none;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+        }
         .skin-left { left: -5%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
-        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); animation-delay: 3s; }
-
-        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(2deg); } }
+        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 20px 8%;
+            position: fixed; top: 0; width: 100%; padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
-            background: rgba(8, 8, 8, 0.7);
+            z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
+            background: rgba(8, 8, 8, 0.8);
         }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; cursor: pointer; }
-        .logo img { width: 38px; border-radius: 8px; border: 1px solid var(--primary); }
-        .nav-links { display: flex; gap: 35px; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 800; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
-        .nav-links a:hover { color: var(--primary); }
+        .logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: white; }
+        .logo img { width: 32px; border-radius: 6px; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; transition: 0.3s; cursor: pointer; text-transform: uppercase; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
 
         /* --- PAGES --- */
-        .page { display: none; padding: 140px 8% 80px; min-height: 100vh; }
-        .page.active { display: block; animation: fadeInUp 0.8s ease; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .page { display: none; padding: 100px 5% 50px; min-height: 100vh; max-width: 1200px; margin: 0 auto; }
+        .page.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- HOME CONTENT --- */
-        .hero { text-align: center; }
-        .welcome-label { font-size: 1.5rem; letter-spacing: 5px; font-weight: 500; margin-bottom: 10px; }
-        .brand-title { font-family: 'Space Grotesk'; font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; line-height: 1; margin-bottom: 40px; }
+        /* --- HERO (HOME) --- */
+        .hero { text-align: center; padding-top: 10vh; }
+        .welcome-label { font-size: 1.2rem; letter-spacing: 4px; font-weight: 500; margin-bottom: 10px; color: #fff; }
+        .brand-title { font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 800; line-height: 1; margin-bottom: 40px; }
         .brand-title span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
-
-        .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: white;
-            padding: 18px 40px; border-radius: 15px; font-weight: 800; text-decoration: none;
-            display: flex; align-items: center; gap: 12px; transition: 0.3s; backdrop-filter: blur(10px);
-        }
-        .nav-btn:hover { background: var(--primary); color: black; transform: translateY(-5px); box-shadow: 0 10px 30px var(--primary-glow); border-color: var(--primary); }
-
-        /* --- TOP DOŁADOWANIA PAGE --- */
-        .donators-list { max-width: 900px; margin: 40px auto; display: flex; flex-direction: column; gap: 15px; }
-        .donator-card {
-            background: var(--bg-card); border: 1px solid var(--border); padding: 20px 35px;
-            border-radius: 20px; display: flex; align-items: center; justify-content: space-between;
-            transition: 0.4s; animation: slideIn 0.5s ease backwards;
-        }
-        .donator-card:hover { transform: scale(1.02); border-color: var(--primary); background: rgba(255,140,0,0.05); }
-        .donator-card:nth-child(1) { border-color: gold; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        .hero-btns { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         
-        .donator-profile { display: flex; align-items: center; gap: 20px; }
-        .donator-profile img { width: 45px; height: 45px; border-radius: 10px; border: 2px solid var(--primary); }
-        .donator-nick { font-size: 1.2rem; font-weight: 800; }
-        .donator-amount { font-family: 'Space Grotesk'; font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+        .btn {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: white;
+            padding: 16px 32px; border-radius: 12px; font-weight: 800; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; cursor: pointer;
+        }
+        .btn:hover { background: var(--primary); color: black; transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 10px 20px var(--primary-glow); }
+        .btn-discord { background: #5865F2; border: none; }
+        .btn-discord:hover { background: #4752c4; color: white; }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        /* --- SKLEP MODES --- */
+        .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
+        .mode-card {
+            background: var(--bg-card); padding: 40px; border-radius: 20px; border: 1px solid var(--border);
+            text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .mode-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .mode-card i { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
 
-        footer { padding: 60px; text-align: center; opacity: 0.4; font-size: 0.8rem; }
+        /* --- SKLEP FORM --- */
+        .shop-container { display: grid; grid-template-columns: 1fr 350px; gap: 30px; margin-top: 30px; }
+        .form-box { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.7rem; font-weight: 800; color: #666; text-transform: uppercase; margin-bottom: 8px; }
+        input[type="text"], input[type="email"] {
+            width: 100%; background: #000; border: 1px solid var(--border); padding: 14px; border-radius: 10px; color: white; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
+        .slider-container { margin: 30px 0; }
+        input[type="range"] { width: 100%; accent-color: var(--primary); }
+        
+        .summary-box { background: #1a1a1a; padding: 25px; border-radius: 20px; text-align: center; height: fit-content; }
+        .skin-preview { height: 180px; margin-bottom: 15px; }
+
+        /* --- TOP DOŁADOWANIA --- */
+        .empty-state { text-align: center; padding: 60px; color: #555; border: 2px dashed var(--border); border-radius: 20px; }
+
+        /* --- REGULAMIN --- */
+        .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .rule-card { background: var(--bg-card); padding: 25px; border-radius: 15px; border: 1px solid var(--border); }
+        .rule-card h4 { color: var(--primary); margin-bottom: 10px; font-family: 'Space Grotesk'; }
+        .rule-card ul { list-style: none; color: #aaa; font-size: 0.9rem; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 900px) {
+            .bg-skin { display: none; }
+            .nav-links { gap: 10px; }
+            .nav-links a { font-size: 0.65rem; }
+            .shop-container { grid-template-columns: 1fr; }
+            .brand-title { font-size: 3rem; }
+            .hero-btns .btn { width: 100%; justify-content: center; }
+        }
     </style>
 </head>
-<body>
+<body onload="init()">
 
-<div class="bg-skin-container">
-    <div class="bg-skin skin-left"></div>
-    <div class="bg-skin skin-right"></div>
-</div>
 <div class="bg-glow"></div>
+<div class="bg-skin skin-left"></div>
+<div class="bg-skin skin-right"></div>
 
 <nav>
     <a class="logo" onclick="go('home')">
-        <img src="darthbox.png">
-        <span style="font-family: 'Space Grotesk'; font-weight: 700;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
+        <img src="https://i.imgur.com/vHqLhWJ.png" onerror="this.src='https://mc-heads.net/avatar/MHF_Question'">
+        <span style="font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: -1px;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
     </a>
     <div class="nav-links">
-        <a onclick="go('home')">HOME</a>
-        <a onclick="go('donations')">TOP DOŁADOWANIA</a>
-        <a href="https://dc.darthbox.pl" target="_blank" style="color: #5865F2;">DISCORD</a>
+        <a onclick="go('home')" id="l-home">Home</a>
+        <a onclick="go('shop')" id="l-shop">Sklep</a>
+        <a onclick="go('donations')" id="l-donations">Top</a>
+        <a onclick="go('rules')" id="l-rules">Regulamin</a>
     </div>
 </nav>
 
@@ -109,80 +134,138 @@
     <div class="hero">
         <p class="welcome-label">WITAJ NA</p>
         <h1 class="brand-title">DARTHBOX<span>.PL</span></h1>
-        
-        <div class="btn-group">
-            <a onclick="go('shop')" class="nav-btn">
-                <i class="fas fa-shopping-cart"></i> SKLEP
-            </a>
-            <a onclick="go('donations')" class="nav-btn">
-                <i class="fas fa-history"></i> OSTATNIE DOŁADOWANIA
-            </a>
-            <a href="https://dc.darthbox.pl" target="_blank" class="nav-btn">
-                <i class="fab fa-discord"></i> DISCORD
-            </a>
+        <div class="hero-btns">
+            <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-basket"></i> SKLEP SERWERA</button>
+            <button class="btn" onclick="go('donations')"><i class="fas fa-trophy"></i> TOP DOŁADOWANIA</button>
+            <a href="https://discord.gg/TWOJLINK" target="_blank" class="btn btn-discord"><i class="fab fa-discord"></i> DISCORD</a>
+        </div>
+    </div>
+</div>
+
+<div id="shop" class="page">
+    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 10px;">WYBIERZ <span style="color:var(--primary)">SERWER</span></h2>
+    <p style="text-align: center; color: #666; margin-bottom: 40px;">Wszystkie przedmioty trafiają do Twojego portfela w grze.</p>
+    
+    <div class="mode-grid">
+        <div class="mode-card" onclick="go('shop-item')">
+            <i class="fas fa-fire"></i>
+            <h3>FlameHUB SkyPrac</h3>
+            <p style="color: #555; font-size: 0.8rem; margin-top: 10px;">KLIKNIJ ABY WEJŚĆ</p>
+        </div>
+    </div>
+</div>
+
+<div id="shop-item" class="page">
+    <button class="btn" onclick="go('shop')" style="padding: 10px 20px; font-size: 0.7rem; margin-bottom: 20px;"><i class="fas fa-arrow-left"></i> POWRÓT</button>
+    
+    <div class="shop-container">
+        <div class="form-box">
+            <h3 style="margin-bottom: 25px; font-family: 'Space Grotesk';">DOŁADOWANIE PORTFELA</h3>
+            
+            <div class="input-group">
+                <label>NICK Z GRY (WYMAGANE)</label>
+                <input type="text" id="mc-nick" placeholder="Twój nick..." oninput="updateSkin()">
+            </div>
+
+            <div class="input-group">
+                <label>E-MAIL (WYMAGANE)</label>
+                <input type="email" id="user-email" placeholder="email@przyklad.pl">
+            </div>
+
+            <div class="slider-container">
+                <label>ILOŚĆ DOŁADOWANIA: <span id="amount-val" style="color:var(--primary)">1</span> PLN</label>
+                <input type="range" min="1" max="100" value="1" oninput="document.getElementById('amount-val').innerText = this.value; document.getElementById('total-val').innerText = this.value">
+            </div>
+
+            <div class="input-group">
+                <label>KOD RABATOWY (OPCJONALNIE)</label>
+                <input type="text" placeholder="Wpisz kod...">
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <img src="https://mc-heads.net/body/MHF_Question" class="skin-preview" id="skin-img">
+            <p id="nick-preview" style="font-weight: 800; color: #888;">Nieznana postać</p>
+            <div style="margin: 20px 0; border-top: 1px dashed #333; padding-top: 20px;">
+                <p style="font-size: 0.8rem; color: #666;">Do zapłaty:</p>
+                <h2 style="color:var(--primary); font-size: 2.5rem;"><span id="total-val">1</span> PLN</h2>
+            </div>
+            <button class="btn" style="width: 100%; justify-content: center; background: var(--primary); color: black;" onclick="buy()">ZAPŁAĆ TERAZ</button>
         </div>
     </div>
 </div>
 
 <div id="donations" class="page">
-    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 20px;">TOP <span style="color:var(--primary)">DOŁADOWANIA</span></h2>
-    <p style="text-align: center; color: #666; margin-bottom: 40px;">Ranking graczy, którzy najbardziej wsparli nasz serwer.</p>
-
-    <div class="donators-list">
-        <div class="donator-card" style="animation-delay: 0.1s;">
-            <div class="donator-profile">
-                <img src="https://mc-heads.net/avatar/Gracz1">
-                <div>
-                    <div class="donator-nick">Gracz1</div>
-                    <span style="font-size: 0.7rem; color: gold; font-weight: 900; letter-spacing: 1px;">#1 DONATOR</span>
-                </div>
-            </div>
-            <div class="donator-amount">250.00 PLN</div>
-        </div>
-
-        <div class="donator-card" style="animation-delay: 0.2s;">
-            <div class="donator-profile">
-                <img src="https://mc-heads.net/avatar/SklepMC">
-                <div class="donator-nick">SklepMC</div>
-            </div>
-            <div class="donator-amount">150.00 PLN</div>
-        </div>
-
-        <div class="donator-card" style="animation-delay: 0.3s;">
-            <div class="donator-profile">
-                <img src="https://mc-heads.net/avatar/Steve">
-                <div class="donator-nick">Steve</div>
-            </div>
-            <div class="donator-amount">75.00 PLN</div>
-        </div>
-
-        <div class="donator-card" style="animation-delay: 0.4s;">
-            <div class="donator-profile">
-                <img src="https://mc-heads.net/avatar/Alex">
-                <div class="donator-nick">Alex</div>
-            </div>
-            <div class="donator-amount">10.00 PLN</div>
-        </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 40px;">
-        <a onclick="go('home')" class="nav-btn" style="display: inline-flex;">POWRÓT</a>
+    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 40px;">TOP <span style="color:var(--primary)">DOŁADOWANIA</span></h2>
+    <div class="empty-state">
+        <i class="fas fa-ghost" style="font-size: 3rem; margin-bottom: 20px; display: block;"></i>
+        <p>Obecnie lista jest pusta. Bądź pierwszym, który wesprze serwer!</p>
     </div>
 </div>
 
-<footer>
-    &copy; 2026 DARTHBOX.PL — WSZELKIE PRAWA ZASTRZEŻONE
-</footer>
+<div id="rules" class="page">
+    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 40px;">REGULAMIN <span style="color:var(--primary)">SERWERA</span></h2>
+    <div class="rules-grid">
+        <div class="rule-card">
+            <h4>1. Postanowienia ogólne</h4>
+            <ul>
+                <li>• Korzystanie z serwera oznacza akceptację regulaminu.</li>
+                <li>• Administracja nie odpowiada za utracone przedmioty przez błędy graczy.</li>
+            </ul>
+        </div>
+        <div class="rule-card">
+            <h4>2. Zasady płatności</h4>
+            <ul>
+                <li>• Płatności są dobrowolną formą wsparcia serwera.</li>
+                <li>• Doładowania są przypisywane do nicku w grze.</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <script>
+    function init() {
+        // Podstawowa inicjalizacja
+    }
+
     function go(id) {
         // Ukryj wszystkie strony
-        document.querySelectorAll('.page').forEach(p => {
-            p.classList.remove('active');
-        });
-        // Pokaż wybraną stronę
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        // Pokaż wybraną
         document.getElementById(id).classList.add('active');
+        // Zmień linki w menu
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        const link = document.getElementById('l-' + (id.includes('shop') ? 'shop' : id));
+        if(link) link.classList.add('active');
+        // Przewiń na górę
         window.scrollTo(0, 0);
+    }
+
+    function updateSkin() {
+        const nick = document.getElementById('mc-nick').value;
+        const img = document.getElementById('skin-img');
+        const txt = document.getElementById('nick-preview');
+        
+        if(nick.length > 2) {
+            img.src = `https://mc-heads.net/body/${nick}`;
+            txt.innerText = nick;
+            txt.style.color = "#ff8c00";
+        } else {
+            img.src = `https://mc-heads.net/body/MHF_Question`;
+            txt.innerText = "Nieznana postać";
+            txt.style.color = "#888";
+        }
+    }
+
+    function buy() {
+        const nick = document.getElementById('mc-nick').value;
+        const email = document.getElementById('user-email').value;
+        
+        if(!nick || !email) {
+            alert("Proszę uzupełnić Nick oraz E-mail!");
+            return;
+        }
+        alert("Przekierowanie do bramki płatności dla: " + nick);
     }
 </script>
 
