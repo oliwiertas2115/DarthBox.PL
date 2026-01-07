@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DarthBox.PL — Dominacja w świecie SkyPrac</title>
+    <title>DarthBox.PL — Sklep</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
@@ -11,248 +11,235 @@
             --primary: #ff8c00;
             --bg-deep: #080808;
             --bg-card: #121212;
+            --bg-input: #1a1a1a;
             --text-main: #f0f0f0;
             --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: default; }
-        body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; }
 
-        /* --- BACKGROUND DECORATIONS --- */
-        .bg-glow {
-            position: fixed; top: -10%; left: 50%; transform: translateX(-50%);
-            width: 80vw; height: 50vh; background: radial-gradient(circle, rgba(255,140,0,0.15) 0%, rgba(8,8,8,0) 70%);
-            z-index: -1; pointer-events: none;
-        }
+        /* --- BACKGROUND --- */
+        .bg-skin-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .bg-skin { position: absolute; height: 90vh; opacity: 0.15; filter: grayscale(1); }
+        .skin-left { left: -5%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
+        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); }
 
-        /* DUŻE SKINNY W TLE - POZYCJE */
-        .bg-skin-container {
-            position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
-        }
-        .bg-skin {
-            position: absolute; height: 90vh; opacity: 0.25; /* Zwiększona widoczność */
-            filter: drop-shadow(0 0 30px rgba(255, 140, 0, 0.2));
-            animation: float 6s ease-in-out infinite;
-        }
-        .skin-left { 
-            left: -5%; bottom: -5%; 
-            /* Render z mieczem (parametr &scale=10) */
-            content: url('https://mc-heads.net/body/XD4min3tor/right'); 
-        }
-        .skin-right { 
-            right: -5%; bottom: -10%; 
-            /* Render z innej perspektywy */
-            content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); 
-            animation-delay: 3s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
-        }
-
-        /* --- LOADER --- */
-        #loader {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.6s ease;
-        }
-        .loader-logo { width: 80px; border-radius: 20px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
-        .loader-bar { width: 200px; height: 3px; background: #111; border-radius: 10px; overflow: hidden; }
-        .loader-progress { width: 0%; height: 100%; background: var(--primary); animation: load 1.2s forwards; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.9); opacity: 0.7; } }
-        @keyframes load { to { width: 100%; } }
-
-        /* --- NAVIGATION --- */
+        /* --- NAV --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 20px 8%;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
-            background: rgba(8, 8, 8, 0.7);
+            z-index: 1000; background: rgba(8, 8, 8, 0.9); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
         }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; cursor: pointer; }
-        .logo img { width: 38px; border-radius: 8px; border: 1px solid var(--primary); }
-        .nav-links { display: flex; gap: 35px; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 800; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
+        .logo { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: white; }
+        .logo img { width: 35px; border-radius: 8px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 800; margin-left: 30px; cursor: pointer; }
         .nav-links a:hover { color: var(--primary); }
 
-        /* --- SEKCJE --- */
-        .page { display: none; padding: 140px 8% 80px; min-height: 100vh; }
-        .page.active { display: block; }
-        .chunk { opacity: 0; transform: translateY(40px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .chunk.show { opacity: 1; transform: translateY(0); }
+        /* --- STRUCTURE --- */
+        .page { display: none; padding: 120px 8% 60px; min-height: 100vh; }
+        .active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- HERO & TEAM --- */
-        .hero { text-align: center; }
-        .hero h1 { font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 700; line-height: 1; margin-bottom: 25px; }
-        .hero h1 span { color: var(--primary); }
+        /* --- SELEKCJA TRYBU --- */
+        .mode-selector { display: flex; justify-content: center; gap: 30px; margin-top: 50px; }
+        .mode-card {
+            background: var(--bg-card); width: 300px; padding: 40px; border-radius: 20px;
+            border: 1px solid var(--border); text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .mode-card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        .mode-card i { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
+
+        /* --- SKLEP MODAL (STYLE JSHOP) --- */
+        .shop-wrapper {
+            max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;
+        }
+        .jshop-card { background: white; color: #333; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        .team-grid { display: flex; justify-content: center; gap: 40px; margin: 50px 0; flex-wrap: wrap; }
-        .team-member { text-align: center; background: rgba(18,18,18,0.7); backdrop-filter: blur(15px); padding: 30px; border-radius: 25px; border: 1px solid var(--border); transition: 0.4s; width: 220px; }
-        .team-member:hover { border-color: var(--primary); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .team-member img { height: 180px; margin-bottom: 15px; }
-
-        .discord-btn {
-            display: inline-flex; align-items: center; gap: 15px;
-            background: #5865F2; color: white; padding: 22px 45px;
-            border-radius: 100px; text-decoration: none; font-weight: 800;
-            font-size: 1.1rem; margin-top: 40px; transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
+        .j-section { margin-bottom: 25px; }
+        .j-label { font-size: 0.75rem; font-weight: 700; color: #999; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        
+        .j-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .j-input-group { position: relative; }
+        .j-input-group i { position: absolute; left: 15px; top: 38px; color: #ccc; }
+        .j-input {
+            width: 100%; background: #f8f9fa; border: 1px solid #eee; padding: 12px 12px 12px 40px;
+            border-radius: 8px; font-size: 0.9rem; outline: none; transition: 0.3s;
         }
-        .discord-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(88, 101, 242, 0.5); }
+        .j-input:focus { border-color: var(--primary); }
 
-        /* --- SKLEP --- */
-        .shop-container { display: grid; grid-template-columns: 1.7fr 1fr; gap: 30px; max-width: 1100px; margin: 0 auto; }
-        .main-box { background: var(--bg-card); border-radius: 30px; padding: 45px; border: 1px solid var(--border); }
-        .side-box { background: var(--bg-card); border-radius: 30px; padding: 35px; border: 1px solid var(--border); text-align: center; }
-        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 16px; border-radius: 14px; color: white; outline: none; margin-top: 8px; }
-        .btn-primary { background: var(--primary); color: black; border: none; padding: 20px; border-radius: 15px; font-weight: 800; width: 100%; cursor: pointer; transition: 0.3s; }
-
-        /* --- REGULAMIN --- */
-        .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1100px; margin: 0 auto; }
-        .rules-card { background: rgba(18,18,18,0.9); padding: 25px; border-radius: 20px; border: 1px solid var(--border); }
-        .rules-list { list-style: none; font-size: 0.85rem; color: #bbb; text-align: left; }
-
-        footer { padding: 40px; text-align: center; opacity: 0.4; font-size: 0.8rem; }
-
-        @media (max-width: 900px) { 
-            .shop-container, .rules-grid { grid-template-columns: 1fr; } 
-            .bg-skin { height: 50vh; opacity: 0.1; }
+        /* Płatności */
+        .j-pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .j-pay-opt {
+            border: 1px solid #eee; border-radius: 10px; padding: 15px; text-align: center;
+            cursor: pointer; transition: 0.2s; background: #fff;
         }
+        .j-pay-opt:hover { background: #fdfdfd; }
+        .j-pay-opt.active { border: 2px solid var(--primary); background: #fff5e6; }
+        .j-pay-opt img { height: 25px; object-fit: contain; }
+
+        /* Zgody */
+        .j-check { display: flex; gap: 10px; margin-bottom: 10px; font-size: 0.8rem; color: #666; align-items: flex-start; }
+        .j-check input { margin-top: 3px; }
+
+        /* Podsumowanie */
+        .j-side { background: #fafafa; border-radius: 15px; padding: 25px; border: 1px solid #eee; color: #333; height: fit-content; }
+        .j-price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #ddd; }
+        .j-total { font-size: 1.5rem; font-weight: 800; color: #2ecc71; }
+        
+        .btn-pay {
+            width: 100%; background: var(--primary); color: white; border: none; padding: 15px;
+            border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 20px; transition: 0.3s;
+        }
+        .btn-pay:hover { filter: brightness(1.1); }
+
+        footer { text-align: center; padding: 40px; opacity: 0.5; font-size: 0.8rem; }
     </style>
 </head>
-<body onload="startApp()">
+<body>
 
 <div class="bg-skin-container">
     <div class="bg-skin skin-left"></div>
     <div class="bg-skin skin-right"></div>
 </div>
-<div class="bg-glow"></div>
-
-<div id="loader">
-    <img src="darthbox.png" class="loader-logo">
-    <div class="loader-bar"><div class="loader-progress"></div></div>
-</div>
 
 <nav>
-    <a class="logo" onclick="go('home')">
-        <img src="darthbox.png">
+    <a class="logo" onclick="showPage('home')">
+        <img src="darthbox.png" alt="Logo">
         <span style="font-family: 'Space Grotesk'; font-weight: 700;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
     </a>
     <div class="nav-links">
-        <a onclick="go('home')">HOME</a>
-        <a onclick="go('shop')">SKLEP</a>
-        <a onclick="go('rules')">REGULAMIN</a>
+        <a onclick="showPage('home')">STRONA GŁÓWNA</a>
+        <a onclick="showPage('shop-select')">SKLEP</a>
+        <a onclick="showPage('rules')">REGULAMIN</a>
     </div>
 </nav>
 
 <div id="home" class="page active">
-    <div class="chunk hero">
-        <img src="darthbox.png" style="width: 120px; border-radius: 30px; margin-bottom: 20px;">
-        <h1>WŁADCY<br><span>DARTHBOX.PL</span></h1>
-        
-        <div class="team-grid">
-            <div class="team-member">
-                <img src="https://mc-heads.net/body/XD4min3tor">
-                <p style="font-weight: 800; font-size: 1.2rem;">XD4min3tor</p>
-                <span style="color: var(--primary); font-size: 0.75rem; font-weight: 900; letter-spacing: 2px;">WŁAŚCICIEL</span>
-            </div>
-            <div class="team-member">
-                <img src="https://mc-heads.net/body/Cr4zyP4cik">
-                <p style="font-weight: 800; font-size: 1.2rem;">Cr4zyP4cik</p>
-                <span style="color: var(--primary); font-size: 0.75rem; font-weight: 900; letter-spacing: 2px;">WŁAŚCICIEL</span>
-            </div>
-        </div>
-
-        <p style="color: #888; max-width: 500px; margin: 0 auto;">Oficjalny sklep serwera SkyPrac. Wesprzyj nas i zyskaj bonusy!</p>
-
-        <a href="https://dc.darthbox.pl" target="_blank" class="discord-btn">
-            <i class="fab fa-discord" style="font-size: 1.5rem;"></i>
-            DOŁĄCZ DO SPOŁECZNOŚCI
-        </a>
+    <div style="text-align: center; margin-top: 50px;">
+        <h1 style="font-size: 4rem; font-family: 'Space Grotesk';">WITAJ NA <span style="color:var(--primary)">DARTHBOX</span></h1>
+        <p style="color: #888; margin-bottom: 30px;">Najlepszy serwer SkyPrac w sieci.</p>
+        <button class="btn-pay" style="width: auto; padding: 15px 40px;" onclick="showPage('shop-select')">PRZEJDŹ DO SKLEPU</button>
     </div>
 </div>
 
-<div id="shop" class="page">
-    <div class="chunk">
-        <div class="shop-container">
-            <div class="main-box">
-                <h2 style="font-family: 'Space Grotesk'; margin-bottom: 30px;"><i class="fas fa-gem" style="color:var(--primary)"></i> DOŁADOWANIE 1.00 PLN</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div><label>NICK</label><input type="text" id="nickInput" oninput="updateSkin()"></div>
-                    <div><label>E-MAIL</label><input type="email" placeholder="..."></div>
+<div id="shop-select" class="page">
+    <h2 style="text-align: center; font-family: 'Space Grotesk'; margin-bottom: 40px;">WYBIERZ <span style="color:var(--primary)">SERWER</span></h2>
+    <div class="mode-selector">
+        <div class="mode-card" onclick="showPage('shop-final')">
+            <i class="fas fa-cloud-sun"></i>
+            <h3>FLAMEHUB SKYPRAC</h3>
+            <p style="color: #666; font-size: 0.8rem; margin-top: 10px;">Kliknij, aby otworzyć sklep</p>
+        </div>
+    </div>
+</div>
+
+<div id="shop-final" class="page">
+    <div class="shop-wrapper">
+        <div class="jshop-card">
+            <div class="j-section">
+                <div class="j-input-row">
+                    <div class="j-input-group">
+                        <span class="j-label">Nick z serwera</span>
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="j-input" id="mc-nick" placeholder="Wpisz swój nick..." oninput="updatePreview()">
+                    </div>
+                    <div class="j-input-group">
+                        <span class="j-label">Adres e-mail</span>
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="j-input" placeholder="Podaj swój e-mail...">
+                    </div>
                 </div>
-                <button class="btn-primary" style="margin-top: 30px;" onclick="handlePay()">ZAPŁAĆ TERAZ</button>
             </div>
-            <div class="side-box">
-                <img src="https://mc-heads.net/body/MHF_Question" id="playerSkin" style="height: 250px;">
-                <p id="playerNickDisplay" style="font-weight: 900; margin-top: 10px;">Nieznany</p>
+
+            <div class="j-section">
+                <span class="j-label">Wybór płatności</span>
+                <div class="j-pay-grid">
+                    <div class="j-pay-opt active" onclick="selectPay(this, 'BLIK')">
+                        <img src="https://vignette.wikia.nocookie.net/logopedia/images/4/4b/Blik_logo.png/revision/latest?cb=20150225181747" alt="BLIK">
+                    </div>
+                    <div class="j-pay-opt" onclick="selectPay(this, 'PSC')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Paysafecard_logo.svg/1280px-Paysafecard_logo.svg.png" alt="PSC">
+                    </div>
+                </div>
             </div>
+
+            <div class="j-section" style="background: #fdfdfd; border: 1px dashed #eee; padding: 15px; border-radius: 10px;">
+                <span class="j-label">Zgody</span>
+                <div class="j-check">
+                    <input type="checkbox" id="z1">
+                    <label for="z1">Oświadczam, że zapoznałem się z treścią regulaminu i akceptuję go.</label>
+                </div>
+                <div class="j-check">
+                    <input type="checkbox" id="z2">
+                    <label for="z2">Wyrażam zgodę na natychmiastowe świadczenie usługi.</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="j-side">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="https://mc-heads.net/body/MHF_Question" id="preview-skin" style="height: 150px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));">
+                <p id="preview-nick" style="font-weight: 800; margin-top: 10px; color: #555;">Nieznana postać</p>
+            </div>
+
+            <div style="font-size: 0.9rem;">
+                <p style="font-weight: 700;">Doładowanie do portfela</p>
+                <p style="color: #888; font-size: 0.8rem; margin-top: 5px;">Gdy zakupisz doładowanie otrzymasz 1.00 PLN do swojego portfela na serwerze.</p>
+            </div>
+
+            <div class="j-price-row">
+                <span style="font-size: 0.8rem; color: #999;">Do zapłaty:</span>
+                <span class="j-total">1.00 zł</span>
+            </div>
+            
+            <button class="btn-pay" onclick="finish()">PRZEJDŹ DO PŁATNOŚCI</button>
         </div>
     </div>
 </div>
 
 <div id="rules" class="page">
-    <div class="chunk">
-        <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 40px;">REGULAMIN</h2>
-        <div class="rules-grid">
-            <div class="rules-card">
-                <h4 style="color:var(--primary); margin-bottom: 10px;">Zasady ogólne</h4>
-                <ul class="rules-list">
-                    <li>1.1 Dołączając na serwer akceptujesz regulamin.</li>
-                    <li>1.3 Administrator ma zawsze rację.</li>
-                    <li>1.5 Główny język: polski.</li>
-                </ul>
-            </div>
-            <div class="rules-card">
-                <h4 style="color:var(--primary); margin-bottom: 10px;">Zakazy</h4>
-                <ul class="rules-list">
-                    <li>2.1 Zakaz cheatów, x-ray.</li>
-                    <li>4.2 Współpraca z cheaterem = Ban.</li>
-                    <li>5.3 Zakaz AutoTotem i InvMove.</li>
-                </ul>
-            </div>
-        </div>
+    <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); padding: 40px; border-radius: 20px;">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">Regulamin DarthBox.PL</h2>
+        <p>Tutaj wpisz treść swojego regulaminu...</p>
     </div>
 </div>
 
 <footer>&copy; 2026 DARTHBOX.PL</footer>
 
 <script>
-    function startApp() {
-        setTimeout(() => {
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => { document.getElementById('loader').style.display = 'none'; reveal(); }, 600);
-        }, 1000);
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0,0);
     }
 
-    function reveal() {
-        document.querySelectorAll('.page.active .chunk').forEach((c, i) => { 
-            setTimeout(() => c.classList.add('show'), i * 150); 
-        });
+    function selectPay(el, type) {
+        document.querySelectorAll('.j-pay-opt').forEach(opt => opt.classList.remove('active'));
+        el.classList.add('active');
     }
 
-    function go(id) {
-        document.querySelectorAll('.page').forEach(p => {
-            p.classList.remove('active');
-            p.querySelectorAll('.chunk').forEach(c => c.classList.remove('show'));
-        });
-        document.getElementById(id).classList.add('active');
-        setTimeout(reveal, 50);
-    }
-
-    function updateSkin() {
-        const n = document.getElementById('nickInput').value;
-        const s = document.getElementById('playerSkin');
-        const d = document.getElementById('playerNickDisplay');
-        if(n.length > 2) {
-            s.src = `https://mc-heads.net/body/${n}`;
-            d.innerText = n;
+    function updatePreview() {
+        const nick = document.getElementById('mc-nick').value;
+        const skin = document.getElementById('preview-skin');
+        const nickLabel = document.getElementById('preview-nick');
+        
+        if(nick.length > 2) {
+            skin.src = `https://mc-heads.net/body/${nick}`;
+            nickLabel.innerText = nick;
+        } else {
+            skin.src = `https://mc-heads.net/body/MHF_Question`;
+            nickLabel.innerText = "Nieznana postać";
         }
     }
 
-    function handlePay() {
-        alert("Przekierowanie do płatności...");
+    function finish() {
+        if(!document.getElementById('z1').checked) {
+            alert("Musisz zaakceptować regulamin!");
+            return;
+        }
+        alert("Przekierowanie do bramki płatności...");
     }
 </script>
 
