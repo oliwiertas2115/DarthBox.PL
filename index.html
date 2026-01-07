@@ -3,186 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DarthBox.PL — Sklep SkyPrac</title>
+    <title>DarthBox.PL — SkyPrac</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --primary: #ff8c00;
-            --bg: #050505;
-            --card: #0f0f0f;
-            --text: #ffffff;
-            --text-dim: #a0a0a0;
-            --border: rgba(255, 255, 255, 0.08);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        :root { --primary: #ff8c00; --bg: #050505; --text: #fff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: var(--text); overflow-x: hidden; }
-
-        /* --- LOADER --- */
-        #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.6s ease-out; }
-        .loader-logo { width: 80px; margin-bottom: 20px; animation: pulse 1.5s infinite ease-in-out; }
-        .loader-bar { width: 200px; height: 2px; background: #111; position: relative; overflow: hidden; }
-        .loader-progress { position: absolute; width: 0%; height: 100%; background: var(--primary); animation: load 1.2s forwards; }
-        @keyframes load { to { width: 100%; } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.9); opacity: 0.7; } }
-
-        /* --- ANIMACJE --- */
-        .reveal { opacity: 0; transform: translateY(20px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* --- NAWIGACJA --- */
-        nav { position: fixed; top: 0; width: 100%; z-index: 2000; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: white; font-weight: 800; }
-        .logo img { width: 35px; border-radius: 8px; }
-
-        /* --- MODAL (OKNO ZAKUPU) --- */
-        #checkout-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: var(--card); width: 100%; max-width: 450px; padding: 30px; border-radius: 25px; border: 1px solid var(--primary); position: relative; }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 25px; cursor: pointer; color: var(--text-dim); }
-        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: #fff; margin-bottom: 15px; }
-        input:focus { border-color: var(--primary); outline: none; }
-
-        /* --- SKLEP I SUWAK --- */
-        .shop-header { padding: 150px 5% 50px; text-align: center; }
-        .tab-btn { background: var(--card); border: 1px solid var(--primary); color: white; padding: 10px 25px; border-radius: 50px; font-weight: 800; margin: 10px; cursor: pointer; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 0 5%; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--card); border: 1px solid var(--border); padding: 35px; border-radius: 24px; transition: 0.3s; position: relative; overflow: hidden; }
-        .card:hover { border-color: var(--primary); transform: scale(1.02); }
-        .tag { position: absolute; top: 15px; right: -30px; background: var(--primary); color: #000; padding: 5px 40px; transform: rotate(45deg); font-size: 0.7rem; font-weight: 900; }
+        /* LOADER */
+        #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.6s; }
+        .loader-logo { width: 80px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.9); } }
 
-        .price { font-size: 2.2rem; font-weight: 800; color: var(--primary); margin: 15px 0; }
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; background: var(--primary); color: #000; }
+        nav { position: fixed; top: 0; width: 100%; z-index: 2000; background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); padding: 15px 5%; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .nav-links a { color: #aaa; text-decoration: none; margin-left: 20px; font-weight: 700; font-size: 0.8rem; }
+        .nav-links a:hover { color: var(--primary); }
 
-        /* Suwak Ilości */
-        .slider-container { margin: 20px 0; }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: #222; border-radius: 5px; cursor: pointer; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--primary); border-radius: 50%; }
-
-        @media (max-width: 768px) {
-            nav { padding: 15px; }
-            .grid { padding: 0 20px; }
-        }
+        header { padding: 180px 5% 100px; text-align: center; }
+        .hero-img { width: 140px; border-radius: 40px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { font-size: 3.5rem; font-weight: 800; }
+        .ip-box { display: inline-block; border: 2px solid var(--primary); padding: 12px 25px; border-radius: 15px; margin-top: 25px; cursor: pointer; font-weight: 800; }
     </style>
 </head>
 <body>
-
-<div id="loader">
-    <img src="darthbox.png" class="loader-logo">
-    <div class="loader-bar"><div class="loader-progress"></div></div>
-</div>
-
-<nav>
-    <a href="index.html" class="logo">
-        <img src="darthbox.png">
-        <span>DARTHBOX.PL</span>
-    </a>
-    <div style="display: flex; gap: 15px;">
-        <a href="https://dc.darthbox.pl" style="color: var(--primary); text-decoration: none; font-weight: 800; font-size: 0.8rem;">DISCORD</a>
-    </div>
-</nav>
-
-<div class="shop-header">
-    <h1 class="reveal">SKLEP <span style="color: var(--primary);">SKYPRAC</span></h1>
-    <p class="reveal" style="color: var(--text-dim); margin-bottom: 30px;">Wybierz kategorię i doładuj swoje konto.</p>
-    <div class="reveal">
-        <button class="tab-btn">FLAMEHUB</button>
-        <button class="tab-btn" style="background: var(--primary); color: #000;">SKYPRAC</button>
-    </div>
-</div>
-
-<div class="grid">
-    <div class="card reveal">
-        <div class="tag">POLECAMY</div>
-        <h3>RANGA DARTH</h3>
-        <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 10px;">Najlepsze przywileje: /fly, /ec, unikalne zestawy przedmiotów.</p>
-        <div class="price">30.00 PLN</div>
-        <button class="btn" onclick="openModal('RANGA DARTH', 30.00)">ZAKUP</button>
-    </div>
-
-    <div class="card reveal">
-        <h3>KLUCZE DARTHBOX</h3>
-        <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 10px;">Wybierz ilość kluczy, które chcesz otrzymać.</p>
-        <div class="slider-container">
-            <label style="font-size: 0.8rem; color: var(--primary);">Ilość: <span id="key-count">1</span></label>
-            <input type="range" min="1" max="50" value="1" id="key-slider" oninput="updatePrice(this.value)">
+    <div id="loader"><img src="darthbox.png" class="loader-logo"></div>
+    <nav>
+        <a href="index.html" style="text-decoration:none; color:white; font-weight:800;"><img src="darthbox.png" style="width:30px; vertical-align:middle;"> DARTHBOX.PL</a>
+        <div class="nav-links">
+            <a href="sklep.html">SKLEP</a>
+            <a href="regulamin.html">REGULAMIN</a>
+            <a href="https://dc.darthbox.pl">DISCORD</a>
         </div>
-        <div class="price"><span id="total-price">10.00</span> PLN</div>
-        <button class="btn" onclick="openModal('KLUCZE DARTHBOX ('+document.getElementById('key-count').innerText+' szt)', document.getElementById('total-price').innerText)">ZAKUP</button>
-    </div>
-</div>
-
-<div id="checkout-modal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <h2 id="modal-title" style="margin-bottom: 20px; font-size: 1.2rem;">ZAKUP</h2>
-        
-        <label style="font-size: 0.7rem; color: var(--text-dim);">NICK Z MINECRAFT (WYMAGANE)</label>
-        <input type="text" id="nick" placeholder="Np. DarthPlayer">
-        
-        <label style="font-size: 0.7rem; color: var(--text-dim);">E-MAIL (WYMAGANE DO POTWIERDZENIA)</label>
-        <input type="email" id="email" placeholder="twoj@email.com">
-        
-        <label style="font-size: 0.7rem; color: var(--text-dim);">KOD VOUCHER (OPCJONALNIE)</label>
-        <input type="text" id="voucher" placeholder="Masz kod? Wpisz go tutaj">
-
-        <div style="background: rgba(255,140,0,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-            <p style="font-size: 0.8rem;">Do zapłaty: <b id="final-price" style="color: var(--primary);">0.00 PLN</b></p>
-        </div>
-
-        <button class="btn" onclick="sendOrder()">ZAMAWIAM I PŁACĘ</button>
-    </div>
-</div>
-
-<footer style="padding: 60px 5%; text-align: center; opacity: 0.5; font-size: 0.7rem;">
-    &copy; 2026 DARTHBOX.PL — SERWER NIE JEST POWIĄZANY Z MOJANG AB.
-</footer>
-
-<script>
-    // Ładowanie i animacje
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.querySelectorAll('.reveal').forEach((el, i) => {
-                    setTimeout(() => el.classList.add('active'), i * 150);
-                });
-            }, 600);
-        }, 1000);
-    });
-
-    // Obsługa suwaka
-    function updatePrice(val) {
-        document.getElementById('key-count').innerText = val;
-        document.getElementById('total-price').innerText = (val * 10).toFixed(2);
-    }
-
-    // Obsługa okna modalnego
-    function openModal(item, price) {
-        document.getElementById('modal-title').innerText = "ZAKUP: " + item;
-        document.getElementById('final-price').innerText = price + " PLN";
-        document.getElementById('checkout-modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('checkout-modal').style.display = 'none';
-    }
-
-    // Symulacja wysyłki zamówienia
-    function sendOrder() {
-        const nick = document.getElementById('nick').value;
-        const email = document.getElementById('email').value;
-        if(!nick || !email) {
-            alert("Proszę uzupełnić Nick i Email!");
-            return;
-        }
-        alert("Zamówienie dla " + nick + " zostało wysłane! Zapraszamy na Discord w celu płatności.");
-        closeModal();
-    }
-</script>
-
+    </nav>
+    <header>
+        <img src="darthbox.png" class="hero-img">
+        <h1>WITAJ NA <span>SKYPRAC</span></h1>
+        <div class="ip-box" onclick="alert('Skopiowano IP!')">IP: DARTHBOX.PL</div>
+    </header>
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display='none', 600); }, 1000); });
+    </script>
 </body>
 </html>
