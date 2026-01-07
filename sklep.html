@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sklep — DarthBox.PL</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --primary: #ff8c00; --bg: #050505; --card: #111; --text: #fff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 100px 5%; }
+        nav { position: fixed; top: 0; left:0; width: 100%; background: #000; padding: 15px 5%; display: flex; justify-content: space-between; border-bottom: 1px solid #222; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 50px; }
+        .card { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid #222; }
+        .price { font-size: 2rem; color: var(--primary); font-weight: 800; margin: 15px 0; }
+        .btn { width: 100%; background: var(--primary); border: none; padding: 15px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" style="color:white; text-decoration:none; font-weight:800;">POWRÓT</a>
+        <span style="color:var(--primary); font-weight:800;">SKLEP SKYPRAC</span>
+    </nav>
+    <h1>DODATKI DO GRY</h1>
+    <div class="grid">
+        <div class="card">
+            <h3>RANGA DARTH</h3>
+            <input type="text" placeholder="Twój Nick">
+            <input type="email" placeholder="Twój Email">
+            <div class="price">30.00 PLN</div>
+            <button class="btn">KUP TERAZ</button>
+        </div>
+        <div class="card">
+            <h3>KLUCZE (SUWAK)</h3>
+            <input type="range" min="1" max="10" value="1" id="s" oninput="document.getElementById('p').innerText = (this.value*10)+'.00'">
+            <p>Ilość: <span id="p">10.00</span> PLN</p>
+            <input type="text" placeholder="Twój Nick">
+            <button class="btn">KUP TERAZ</button>
+        </div>
+    </div>
+</body>
+</html>
