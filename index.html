@@ -13,7 +13,6 @@
             --bg-card: #121212;
             --text-main: #f0f0f0;
             --border: rgba(255, 255, 255, 0.08);
-            --input: #050505;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: default; }
@@ -57,55 +56,44 @@
         .chunk { opacity: 0; transform: translateY(40px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .chunk.show { opacity: 1; transform: translateY(0); }
 
-        /* --- HERO --- */
+        /* --- HERO & TEAM --- */
         .hero { text-align: center; }
         .hero h1 { font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 700; line-height: 1; margin-bottom: 25px; }
         .hero h1 span { color: var(--primary); }
-        .ip-box {
-            display: inline-flex; align-items: center; gap: 15px;
-            background: var(--bg-card); border: 1px solid var(--border);
-            padding: 14px 30px; border-radius: 100px; cursor: pointer; transition: 0.3s;
-        }
-
-        /* --- GRID SKLEPU --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 50px; }
-        .card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            padding: 40px; border-radius: 24px; text-align: left; transition: 0.4s;
-        }
-        .card:hover { border-color: var(--primary); transform: translateY(-10px); }
-        .price { font-size: 2rem; font-weight: 900; color: var(--primary); margin: 20px 0; }
         
-        .btn { width: 100%; padding: 18px; border: none; border-radius: 12px; font-weight: 800; transition: 0.3s; cursor: pointer; }
-        .btn-primary { background: var(--primary); color: black; }
+        .team-grid { display: flex; justify-content: center; gap: 40px; margin-top: 50px; flex-wrap: wrap; }
+        .team-member { text-align: center; background: var(--bg-card); padding: 20px; border-radius: 20px; border: 1px solid var(--border); transition: 0.3s; }
+        .team-member:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .team-member img { height: 180px; margin-bottom: 15px; }
 
-        /* --- PANEL ZAMÓWIENIA (TEN NOWY) --- */
-        .shop-container { display: grid; grid-template-columns: 1.7fr 1fr; gap: 30px; max-width: 1100px; margin: 0 auto; text-align: left; }
+        /* --- SKLEP / CHECKOUT --- */
+        .shop-container { display: grid; grid-template-columns: 1.7fr 1fr; gap: 30px; max-width: 1100px; margin: 0 auto; }
         .main-box { background: var(--bg-card); border-radius: 30px; padding: 45px; border: 1px solid var(--border); }
         .side-box { background: var(--bg-card); border-radius: 30px; padding: 35px; border: 1px solid var(--border); text-align: center; height: fit-content; }
         
         .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
         label { font-size: 0.7rem; font-weight: 800; color: #555; text-transform: uppercase; margin-bottom: 8px; display: block; }
-        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 16px; border-radius: 14px; color: white; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--primary); }
-
-        .slider-box { background: #0a0a0a; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid var(--border); }
-        input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; margin-top: 15px; }
-
+        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 16px; border-radius: 14px; color: white; outline: none; }
+        
         .pay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
-        .pay-method { background: #0a0a0a; border: 2px solid var(--border); padding: 18px; border-radius: 18px; cursor: pointer; text-align: center; transition: 0.3s; opacity: 0.5; }
-        .pay-method.active { border-color: var(--primary); opacity: 1; background: rgba(255,140,0,0.05); }
+        .pay-method { background: #0a0a0a; border: 2px solid var(--border); padding: 18px; border-radius: 18px; cursor: pointer; text-align: center; opacity: 0.5; }
+        .pay-method.active { border-color: var(--primary); opacity: 1; }
         .pay-method i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
-        .skin-img { height: 220px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8)); margin: 20px 0; transition: 0.5s; }
+        /* --- REGULAMIN --- */
+        .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; max-width: 1100px; margin: 0 auto; text-align: left; }
+        .rules-card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
+        .rules-card h3 { color: var(--primary); font-family: 'Space Grotesk'; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .rules-list { list-style: none; font-size: 0.9rem; color: #aaa; }
+        .rules-list li { margin-bottom: 8px; padding-left: 20px; position: relative; }
+        .rules-list li::before { content: "•"; color: var(--primary); position: absolute; left: 0; }
 
-        footer { padding: 80px 8% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 100px; opacity: 0.6; }
+        .btn-primary { background: var(--primary); color: black; border: none; padding: 20px; border-radius: 15px; font-weight: 800; width: 100%; cursor: pointer; transition: 0.3s; }
+        .btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
-        @media (max-width: 900px) {
-            .shop-container { grid-template-columns: 1fr; }
-            .grid-inputs { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-        }
+        footer { padding: 60px; text-align: center; opacity: 0.4; font-size: 0.8rem; }
+
+        @media (max-width: 900px) { .shop-container, .rules-grid { grid-template-columns: 1fr; } .nav-links { display: none; } }
     </style>
 </head>
 <body onload="startApp()">
@@ -120,71 +108,44 @@
 <nav>
     <a class="logo" onclick="go('home')">
         <img src="darthbox.png">
-        <span style="font-family: 'Space Grotesk'; font-weight: 700; font-size: 1.2rem;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
+        <span style="font-family: 'Space Grotesk'; font-weight: 700;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
     </a>
     <div class="nav-links">
-        <a onclick="go('home')">OVERVIEW</a>
-        <a onclick="go('modes')">SKLEP</a>
-        <a href="https://dc.darthbox.pl" target="_blank">DISCORD</a>
+        <a onclick="go('home')">STRONA GŁÓWNA</a>
+        <a onclick="go('shop')">SKLEP (1 PLN)</a>
         <a onclick="go('rules')">REGULAMIN</a>
+        <a href="https://dc.darthbox.pl" target="_blank">DISCORD</a>
     </div>
 </nav>
 
 <div id="home" class="page active">
     <div class="chunk hero">
-        <img src="darthbox.png" style="width: 150px; border-radius: 35px; margin-bottom: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.5);">
-        <h1>LEGENDARNY<br><span>SKYPRAC</span> W POLSCE</h1>
-        <p style="color: #888; font-size: 1.1rem; margin-bottom: 40px;">Dołącz do elitarnej społeczności graczy. Unikalna ekonomia i zero lagów.</p>
-        <div class="ip-box" onclick="copyIP()">
-            <i class="fas fa-terminal" style="color: var(--primary)"></i>
-            <span id="ip-text" style="font-weight: 900; letter-spacing: 1px;">IP: DARTHBOX.PL</span>
-        </div>
-    </div>
-</div>
-
-<div id="modes" class="page">
-    <div class="chunk" style="text-align: center;">
-        <h2 style="font-family: 'Space Grotesk'; font-size: 3rem; margin-bottom: 50px;">WYBIERZ <span style="color:var(--primary)">SERWER</span></h2>
-        <div class="card" onclick="go('shop-items')" style="max-width: 500px; margin: 0 auto; cursor: pointer; border: 1px solid var(--primary); text-align: center;">
-            <i class="fas fa-fire" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; display: block;"></i>
-            <h3>FLAMEHUB</h3>
-            <p style="color: #888;">SkyPrac + Unikalna Ekonomia. Najpopularniejszy tryb.</p>
-            <button class="btn btn-primary" style="margin-top: 30px;">PRZEJDŹ DO OFERT</button>
-        </div>
-    </div>
-</div>
-
-<div id="shop-items" class="page">
-    <div class="chunk">
-        <h2 style="font-family: 'Space Grotesk'; font-size: 2.5rem; text-align: center; margin-bottom: 40px;">DOSTĘPNE <span style="color:var(--primary)">USŁUGI</span></h2>
-        <div class="grid">
-            <div class="card">
-                <h3>RANGA DARTH</h3>
-                <p style="color: #777;">Ekskluzywne uprawnienia i unikalny prefix.</p>
-                <div class="price">30.00 PLN</div>
-                <button class="btn btn-primary" onclick="openPayment('RANGA DARTH', 30, false)">WYBIERZ</button>
+        <img src="darthbox.png" style="width: 140px; border-radius: 30px; margin-bottom: 30px;">
+        <h1>WITAJ NA<br><span>DARTHBOX.PL</span></h1>
+        <p style="color: #666; max-width: 600px; margin: 0 auto 40px;">Najlepszy serwer SkyPrac w Polsce. Dołącz do nas już dziś!</p>
+        
+        <h2 style="font-family: 'Space Grotesk'; margin-bottom: 20px;">NASZA <span style="color:var(--primary)">EKIPA</span></h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="https://mc-heads.net/body/XD4min3tor">
+                <p style="font-weight: 800;">XD4min3tor</p>
+                <span style="color: var(--primary); font-size: 0.7rem; font-weight: 900;">ADMINISTRATOR</span>
             </div>
-            <div class="card">
-                <h3>KLUCZ DARTHBOX</h3>
-                <p style="color: #777;">Otwórz skrzynię i wygraj legendarne itemy.</p>
-                <div class="price">10.00 PLN</div>
-                <button class="btn btn-primary" onclick="openPayment('KLUCZ DARTHBOX', 10, true)">WYBIERZ</button>
-            </div>
-            <div class="card">
-                <h3>KLUCZ LEGENDARNY</h3>
-                <p style="color: #777;">Rzadkie przedmioty tylko z tej skrzyni.</p>
-                <div class="price">6.00 PLN</div>
-                <button class="btn btn-primary" onclick="openPayment('KLUCZ LEGENDARNY', 6, true)">WYBIERZ</button>
+            <div class="team-member">
+                <img src="https://mc-heads.net/body/Cr4zyP4cik">
+                <p style="font-weight: 800;">Cr4zyP4cik</p>
+                <span style="color: var(--primary); font-size: 0.7rem; font-weight: 900;">ADMINISTRATOR</span>
             </div>
         </div>
     </div>
 </div>
 
-<div id="checkout" class="page">
+<div id="shop" class="page">
     <div class="chunk">
         <div class="shop-container">
             <div class="main-box">
-                <h2 style="font-family: 'Space Grotesk'; font-size: 1.8rem;" id="item-name">ZAKUP</h2>
+                <h2 style="font-family: 'Space Grotesk'; margin-bottom: 10px;"><i class="fas fa-coins" style="color:var(--primary)"></i> DOŁADOWANIE PORTFELA</h2>
+                <p style="color: #555; font-size: 0.8rem; margin-bottom: 30px;">Usługa: Dodanie 1.00 PLN do Twojego konta /portfel</p>
                 
                 <div class="grid-inputs">
                     <div class="input-group">
@@ -193,48 +154,29 @@
                     </div>
                     <div class="input-group">
                         <label>E-mail</label>
-                        <input type="email" placeholder="twoj@email.pl">
+                        <input type="email" placeholder="email@domena.pl">
                     </div>
-                </div>
-
-                <div id="qty-container" class="slider-box" style="display: none;">
-                    <div style="display:flex; justify-content:space-between; font-weight: 900;">
-                        <span>ILOŚĆ:</span>
-                        <span style="color:var(--primary)" id="qtyDisplay">1</span>
-                    </div>
-                    <input type="range" id="qtySlider" min="1" max="100" value="1" oninput="updateQty(this.value)">
                 </div>
 
                 <label>Metoda płatności</label>
                 <div class="pay-grid">
-                    <div class="pay-method active" onclick="setPay(this)">
-                        <i class="fas fa-mobile-alt"></i><span>BLIK</span>
-                    </div>
-                    <div class="pay-method" onclick="setPay(this)">
-                        <i class="fas fa-credit-card"></i><span>PSC</span>
-                    </div>
-                    <div class="pay-method" onclick="setPay(this)">
-                        <i class="fas fa-university"></i><span>PRZELEW</span>
-                    </div>
+                    <div class="pay-method active" onclick="setPay(this)"><i class="fas fa-mobile-alt"></i><span>BLIK</span></div>
+                    <div class="pay-method" onclick="setPay(this)"><i class="fas fa-credit-card"></i><span>PSC</span></div>
+                    <div class="pay-method" onclick="setPay(this)"><i class="fas fa-university"></i><span>PRZELEW</span></div>
                 </div>
 
                 <div style="display: flex; gap: 12px; margin: 30px 0;">
-                    <input type="checkbox" id="rulesCheck" style="width: 20px; height: 20px; cursor: pointer;">
-                    <label for="rulesCheck" style="text-transform: none; color: #777; font-weight: 400; cursor: pointer;">
-                        Akceptuję regulamin serwera. Rozumiem, że płatność jest bezzwrotna.
-                    </label>
+                    <input type="checkbox" id="c" style="width: 20px; height: 20px;">
+                    <label for="c" style="text-transform: none; color: #777; font-weight: 400;">Akceptuję regulamin serwera DarthBox.PL</label>
                 </div>
 
-                <button class="btn btn-primary" style="padding: 22px; font-size: 1.1rem;" onclick="handlePay()">ZAPŁAĆ <span id="finalPrice">0.00</span> PLN</button>
+                <button class="btn-primary" onclick="handlePay()">ZAPŁAĆ 1.00 PLN</button>
             </div>
 
             <div class="side-box">
-                <h4 style="letter-spacing: 2px; font-size: 0.7rem; color: var(--primary); font-weight: 900;">PODGLĄD POSTACI</h4>
-                <img src="https://mc-heads.net/body/MHF_Question" id="playerSkin" class="skin-img">
-                <p id="playerNickDisplay" style="font-weight: 800; font-size: 1.3rem;">Nieznany</p>
-                <div style="margin-top: 20px; padding: 15px; background: #000; border-radius: 12px; font-size: 0.75rem; color: #555; text-align: left; border: 1px solid var(--border);">
-                    Status: <span style="color: var(--primary)">Wymagany online</span>
-                </div>
+                <label>PODGLĄD POSTACI</label>
+                <img src="https://mc-heads.net/body/MHF_Question" id="playerSkin" style="height: 250px; margin: 20px 0;">
+                <p id="playerNickDisplay" style="font-weight: 900; font-size: 1.4rem;">Nieznany</p>
             </div>
         </div>
     </div>
@@ -242,23 +184,61 @@
 
 <div id="rules" class="page">
     <div class="chunk">
-        <h2 style="font-family: 'Space Grotesk'; font-size: 3rem; text-align: center; margin-bottom: 40px;">REGULAMIN</h2>
-        <div style="background: var(--bg-card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); max-width: 800px; margin: 0 auto; color: #aaa;">
-            <p style="margin-bottom: 15px;">1. Zakupione usługi cyfrowe nie podlegają zwrotowi.</p>
-            <p style="margin-bottom: 15px;">2. Gracz ma obowiązek przebywać na serwerze podczas zakupu.</p>
-            <p>3. Nieznajomość regulaminu nie zwalnia z jego przestrzegania.</p>
+        <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 50px;">REGULAMIN <span style="color:var(--primary)">SERWERA</span></h2>
+        
+        <div class="rules-grid">
+            <div class="rules-card">
+                <h3><i class="fas fa-info-circle"></i> Zasady ogólne</h3>
+                <ul class="rules-list">
+                    <li>1.1 Dołączając na serwer akceptujesz regulamin.</li>
+                    <li>1.2 Nieznajomość regulaminu nie zwalnia z przestrzegania.</li>
+                    <li>1.3 Administrator ma zawsze rację.</li>
+                    <li>1.4 Wykonuj polecenia moderacji.</li>
+                    <li>1.5 Główny język: polski.</li>
+                </ul>
+            </div>
+            
+            <div class="rules-card">
+                <h3><i class="fas fa-gamepad"></i> Minecraft</h3>
+                <ul class="rules-list">
+                    <li>2.1 Zakaz cheatów, x-ray, minimap pokazujących graczy.</li>
+                    <li>2.2 Zakaz bugowania mechanik, budowli wulgarnych.</li>
+                    <li>2.3 Podszywanie się pod innych — zabronione.</li>
+                    <li>2.4 Automatyczne farmy lagujące będą usuwane.</li>
+                    <li>2.7 Możemy sprawdzić cię w dowolnym momencie.</li>
+                </ul>
+            </div>
+
+            <div class="rules-card">
+                <h3><i class="fas fa-comments"></i> Chat</h3>
+                <ul class="rules-list">
+                    <li>3.1 Wiadomości obraźliwe, spam, caps — zabronione.</li>
+                    <li>3.2 Zakaz reklamowania serwerów i udostępniania danych.</li>
+                    <li>3.3 Zakaz handlu poza serwerem.</li>
+                    <li>3.4 Zakaz zachęcania do spamu.</li>
+                </ul>
+            </div>
+
+            <div class="rules-card">
+                <h3><i class="fas fa-ban"></i> Zakazane modyfikacje</h3>
+                <ul class="rules-list">
+                    <li>5.2 Inventory Move, Quick Elytra.</li>
+                    <li>5.3 AutoTotem, Elytra Swapper.</li>
+                    <li>5.4 BetterPvP (z minimapą graczy).</li>
+                    <li>5.5 Mouse Tweaks, Mouse Wheelie.</li>
+                    <li>5.9 Minimapy pokazujące pozycje graczy.</li>
+                </ul>
+            </div>
         </div>
+        <p style="text-align:center; margin-top: 40px; color: #444; font-size: 0.8rem;">Pełna wersja regulaminu dostępna u Administracji.</p>
     </div>
 </div>
 
 <footer>
-    <p style="color: #444; font-size: 0.8rem; font-weight: 700;">&copy; 2026 DARTHBOX.PL — WSZELKIE PRAWA ZASTRZEŻONE</p>
+    &copy; 2026 DARTHBOX.PL — WSZELKIE PRAWA ZASTRZEŻONE
 </footer>
 
 <script>
-    let basePrice = 0;
-    let hasQty = false;
-
     function startApp() {
         setTimeout(() => {
             const loader = document.getElementById('loader');
@@ -283,21 +263,6 @@
         setTimeout(reveal, 50);
     }
 
-    function openPayment(name, price, qtyEnabled) {
-        basePrice = price;
-        hasQty = qtyEnabled;
-        document.getElementById('item-name').innerText = name;
-        document.getElementById('qty-container').style.display = qtyEnabled ? 'block' : 'none';
-        document.getElementById('qtySlider').value = 1;
-        updateQty(1);
-        go('checkout');
-    }
-
-    function updateQty(val) {
-        document.getElementById('qtyDisplay').innerText = val;
-        document.getElementById('finalPrice').innerText = (basePrice * val).toFixed(2);
-    }
-
     function updateSkin() {
         const nick = document.getElementById('nickInput').value;
         const skinImg = document.getElementById('playerSkin');
@@ -316,17 +281,11 @@
         el.classList.add('active');
     }
 
-    function copyIP() {
-        navigator.clipboard.writeText("DarthBox.PL");
-        document.getElementById('ip-text').innerText = "SKOPIOWANO!";
-        setTimeout(() => document.getElementById('ip-text').innerText = "IP: DARTHBOX.PL", 2000);
-    }
-
     function handlePay() {
         const nick = document.getElementById('nickInput').value;
         if(!nick) return alert("Podaj nick!");
-        if(!document.getElementById('rulesCheck').checked) return alert("Zaakceptuj regulamin!");
-        alert("Inicjowanie płatności dla gracza: " + nick);
+        if(!document.getElementById('c').checked) return alert("Musisz zaakceptować regulamin!");
+        alert("Inicjowanie płatności 1.00 PLN dla: " + nick);
     }
 </script>
 
