@@ -3,257 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARTHBOX.PL — Serwer Minecraft</title>
+    <title>DarthBox.PL — Serwer Minecraft</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ff8c00;
             --primary-glow: rgba(255, 140, 0, 0.5);
-            --bg-deep: #0a0a0a;
-            --text-main: #ffffff;
+            --bg-deep: #080808;
+            --bg-card: #121212;
+            --text-main: #f0f0f0;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: default; }
-        
-        body { 
-            background-color: var(--bg-deep); 
-            color: var(--text-main); 
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
+
+        /* --- BACKGROUND DECORATIONS --- */
+        .bg-glow {
+            position: fixed; top: -10%; left: 50%; transform: translateX(-50%);
+            width: 80vw; height: 50vh; background: radial-gradient(circle, rgba(255,140,0,0.15) 0%, rgba(8,8,8,0) 70%);
+            z-index: -1; pointer-events: none;
         }
 
-        /* --- TŁO I EFEKTY --- */
-        .background-overlay {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(10,10,10,1) 0%, rgba(20,20,20,1) 100%);
-            z-index: -2;
-        }
+        .bg-skin-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .bg-skin { position: absolute; height: 90vh; opacity: 0.25; animation: float 6s ease-in-out infinite; }
+        .skin-left { left: -5%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
+        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); animation-delay: 3s; }
 
-        .glow-sphere {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--primary-glow) 0%, rgba(0,0,0,0) 70%);
-            filter: blur(80px);
-            z-index: -1;
-            opacity: 0.4;
-            animation: moveGlow 15s infinite alternate;
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(2deg); } }
 
-        @keyframes moveGlow {
-            from { transform: translate(-20%, -20%); }
-            to { transform: translate(20%, 20%); }
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+            background: rgba(8, 8, 8, 0.7);
         }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; cursor: pointer; }
+        .logo img { width: 38px; border-radius: 8px; border: 1px solid var(--primary); }
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 800; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover { color: var(--primary); }
 
-        /* --- GŁÓWNY KONTENER --- */
-        .main-container {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            padding: 0 50px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
+        /* --- PAGES --- */
+        .page { display: none; padding: 140px 8% 80px; min-height: 100vh; }
+        .page.active { display: block; animation: fadeInUp 0.8s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* --- HOME CONTENT --- */
+        .hero { text-align: center; }
+        .welcome-label { font-size: 1.5rem; letter-spacing: 5px; font-weight: 500; margin-bottom: 10px; }
+        .brand-title { font-family: 'Space Grotesk'; font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; line-height: 1; margin-bottom: 40px; }
+        .brand-title span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
 
-        /* --- TEKST I TYTUŁ --- */
-        .hero-content {
-            flex: 1;
-            z-index: 10;
-        }
-
-        .welcome-text {
-            font-size: 1.5rem;
-            font-weight: 500;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
-
-        .brand-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 5rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 30px;
-        }
-
-        .brand-title span {
-            color: var(--primary);
-            text-shadow: 0 0 30px var(--primary-glow);
-            animation: textPulse 2s infinite alternate;
-        }
-
-        @keyframes textPulse {
-            from { text-shadow: 0 0 20px var(--primary-glow); }
-            to { text-shadow: 0 0 50px var(--primary-glow), 0 0 10px var(--primary); }
-        }
-
-        /* --- PRZYCISKI --- */
-        .button-group {
-            display: flex;
-            gap: 20px;
-        }
-
+        .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
         .nav-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 16px 35px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: white;
+            padding: 18px 40px; border-radius: 15px; font-weight: 800; text-decoration: none;
+            display: flex; align-items: center; gap: 12px; transition: 0.3s; backdrop-filter: blur(10px);
         }
+        .nav-btn:hover { background: var(--primary); color: black; transform: translateY(-5px); box-shadow: 0 10px 30px var(--primary-glow); border-color: var(--primary); }
 
-        .nav-btn i { font-size: 1.2rem; transition: transform 0.3s; }
-
-        .nav-btn:hover {
-            background: var(--primary);
-            color: black;
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 30px var(--primary-glow);
-            border-color: var(--primary);
+        /* --- TOP DOŁADOWANIA PAGE --- */
+        .donators-list { max-width: 900px; margin: 40px auto; display: flex; flex-direction: column; gap: 15px; }
+        .donator-card {
+            background: var(--bg-card); border: 1px solid var(--border); padding: 20px 35px;
+            border-radius: 20px; display: flex; align-items: center; justify-content: space-between;
+            transition: 0.4s; animation: slideIn 0.5s ease backwards;
         }
+        .donator-card:hover { transform: scale(1.02); border-color: var(--primary); background: rgba(255,140,0,0.05); }
+        .donator-card:nth-child(1) { border-color: gold; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        
+        .donator-profile { display: flex; align-items: center; gap: 20px; }
+        .donator-profile img { width: 45px; height: 45px; border-radius: 10px; border: 2px solid var(--primary); }
+        .donator-nick { font-size: 1.2rem; font-weight: 800; }
+        .donator-amount { font-family: 'Space Grotesk'; font-size: 1.4rem; font-weight: 700; color: var(--primary); }
 
-        .nav-btn:hover i { transform: rotate(15deg); }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* --- SKIN / POSTACIE --- */
-        .character-box {
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-            gap: -50px;
-        }
-
-        .character {
-            height: 550px;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-
-        .character:hover {
-            transform: scale(1.05) translateY(-10px);
-            filter: drop-shadow(0 30px 60px rgba(0,0,0,1));
-            z-index: 100;
-        }
-
-        .char-label {
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: black;
-            padding: 4px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            white-space: nowrap;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .character:hover .char-label { opacity: 1; bottom: 20px; }
-
-        /* --- FOOTER OSTATNIE ZAKUPY --- */
-        .last-buyers {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.6);
-            padding: 15px 30px;
-            border-radius: 100px;
-            border: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .buyer { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 20px; }
-        .buyer:last-child { border: none; }
-        .buyer img { width: 24px; border-radius: 4px; }
-
+        footer { padding: 60px; text-align: center; opacity: 0.4; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <div class="background-overlay"></div>
-    <div class="glow-sphere"></div>
+<div class="bg-skin-container">
+    <div class="bg-skin skin-left"></div>
+    <div class="bg-skin skin-right"></div>
+</div>
+<div class="bg-glow"></div>
 
-    <div class="main-container">
+<nav>
+    <a class="logo" onclick="go('home')">
+        <img src="darthbox.png">
+        <span style="font-family: 'Space Grotesk'; font-weight: 700;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
+    </a>
+    <div class="nav-links">
+        <a onclick="go('home')">HOME</a>
+        <a onclick="go('donations')">TOP DOŁADOWANIA</a>
+        <a href="https://dc.darthbox.pl" target="_blank" style="color: #5865F2;">DISCORD</a>
+    </div>
+</nav>
+
+<div id="home" class="page active">
+    <div class="hero">
+        <p class="welcome-label">WITAJ NA</p>
+        <h1 class="brand-title">DARTHBOX<span>.PL</span></h1>
         
-        <div class="hero-content">
-            <p class="welcome-text">WITAJ NA</p>
-            <h1 class="brand-title">DARTHBOX<span>.PL</span></h1>
-            
-            <div class="button-group">
-                <a href="#" class="nav-btn" onclick="showPage('shop')">
-                    <i class="fas fa-shopping-cart"></i> SKLEP
-                </a>
-                <a href="#" class="nav-btn" onclick="showPage('rules')">
-                    <i class="fas fa-book"></i> REGULAMIN
-                </a>
-                <a href="https://dc.darthbox.pl" target="_blank" class="nav-btn">
-                    <i class="fab fa-discord"></i> DISCORD
-                </a>
-            </div>
-        </div>
-
-        <div class="character-box">
-            <div class="character">
-                <img src="https://mc-heads.net/body/XD4min3tor/right" alt="XD4min3tor">
-                <div class="char-label">WŁAŚCICIEL: XD4min3tor</div>
-            </div>
-            <div class="character" style="margin-left: -100px; transform: scale(0.9) translateY(20px);">
-                <img src="https://mc-heads.net/body/Cr4zyP4cik/left" alt="Cr4zyP4cik">
-                <div class="char-label">WŁAŚCICIEL: Cr4zyP4cik</div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="last-buyers">
-        <span style="color: #666; font-size: 0.8rem; font-weight: 800;">OSTATNIE ZAKUPY:</span>
-        <div class="buyer">
-            <img src="https://mc-heads.net/avatar/JustNadlaa" alt="head">
-            <span>JustNadlaa</span>
-        </div>
-        <div class="buyer">
-            <img src="https://mc-heads.net/avatar/47cytryna_" alt="head">
-            <span>47cytryna_</span>
-        </div>
-        <div class="buyer">
-            <img src="https://mc-heads.net/avatar/czkekolaa1" alt="head">
-            <span>czkekolaa1</span>
+        <div class="btn-group">
+            <a onclick="go('shop')" class="nav-btn">
+                <i class="fas fa-shopping-cart"></i> SKLEP
+            </a>
+            <a onclick="go('donations')" class="nav-btn">
+                <i class="fas fa-history"></i> OSTATNIE DOŁADOWANIA
+            </a>
+            <a href="https://dc.darthbox.pl" target="_blank" class="nav-btn">
+                <i class="fab fa-discord"></i> DISCORD
+            </a>
         </div>
     </div>
+</div>
 
-    <script>
-        // Funkcja do zmiany podstron (jeśli masz je w kodzie)
-        function showPage(id) {
-            console.log("Przejście do: " + id);
-            // Tutaj możesz dodać logikę ukrywania strony głównej
-        }
-    </script>
+<div id="donations" class="page">
+    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 20px;">TOP <span style="color:var(--primary)">DOŁADOWANIA</span></h2>
+    <p style="text-align: center; color: #666; margin-bottom: 40px;">Ranking graczy, którzy najbardziej wsparli nasz serwer.</p>
+
+    <div class="donators-list">
+        <div class="donator-card" style="animation-delay: 0.1s;">
+            <div class="donator-profile">
+                <img src="https://mc-heads.net/avatar/Gracz1">
+                <div>
+                    <div class="donator-nick">Gracz1</div>
+                    <span style="font-size: 0.7rem; color: gold; font-weight: 900; letter-spacing: 1px;">#1 DONATOR</span>
+                </div>
+            </div>
+            <div class="donator-amount">250.00 PLN</div>
+        </div>
+
+        <div class="donator-card" style="animation-delay: 0.2s;">
+            <div class="donator-profile">
+                <img src="https://mc-heads.net/avatar/SklepMC">
+                <div class="donator-nick">SklepMC</div>
+            </div>
+            <div class="donator-amount">150.00 PLN</div>
+        </div>
+
+        <div class="donator-card" style="animation-delay: 0.3s;">
+            <div class="donator-profile">
+                <img src="https://mc-heads.net/avatar/Steve">
+                <div class="donator-nick">Steve</div>
+            </div>
+            <div class="donator-amount">75.00 PLN</div>
+        </div>
+
+        <div class="donator-card" style="animation-delay: 0.4s;">
+            <div class="donator-profile">
+                <img src="https://mc-heads.net/avatar/Alex">
+                <div class="donator-nick">Alex</div>
+            </div>
+            <div class="donator-amount">10.00 PLN</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a onclick="go('home')" class="nav-btn" style="display: inline-flex;">POWRÓT</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 DARTHBOX.PL — WSZELKIE PRAWA ZASTRZEŻONE
+</footer>
+
+<script>
+    function go(id) {
+        // Ukryj wszystkie strony
+        document.querySelectorAll('.page').forEach(p => {
+            p.classList.remove('active');
+        });
+        // Pokaż wybraną stronę
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+</script>
+
 </body>
 </html>
