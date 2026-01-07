@@ -16,7 +16,7 @@
             --input: #050505;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: default; }
         body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
 
         /* --- BACKGROUND GLOW --- */
@@ -30,77 +30,76 @@
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 10000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 0.6s ease;
         }
-        .loader-bar { width: 150px; height: 2px; background: #222; margin-top: 20px; position: relative; overflow: hidden; }
-        .loader-progress { width: 0%; height: 100%; background: var(--primary); animation: load 1.5s forwards; }
+        .loader-logo { width: 80px; border-radius: 20px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        .loader-bar { width: 200px; height: 3px; background: #111; border-radius: 10px; overflow: hidden; }
+        .loader-progress { width: 0%; height: 100%; background: var(--primary); animation: load 1.2s forwards cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.9); opacity: 0.7; } }
         @keyframes load { to { width: 100%; } }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 25px 8%;
+            position: fixed; top: 0; width: 100%; padding: 20px 8%;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
-            background: rgba(8, 8, 8, 0.8);
+            z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+            background: rgba(8, 8, 8, 0.7);
         }
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; cursor: pointer; }
-        .logo img { width: 40px; border-radius: 8px; border: 1px solid var(--primary); }
-        .nav-links { display: flex; gap: 40px; }
-        .nav-links a { color: #999; text-decoration: none; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
-        .nav-links a:hover { color: var(--primary); }
+        .logo img { width: 38px; border-radius: 8px; border: 1px solid var(--primary); }
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 800; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover { color: var(--primary); transform: translateY(-2px); }
 
         /* --- SEKCJE --- */
-        .page { display: none; padding: 150px 8% 80px; min-height: 100vh; }
+        .page { display: none; padding: 140px 8% 80px; min-height: 100vh; }
         .page.active { display: block; }
-        .chunk { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .chunk { opacity: 0; transform: translateY(40px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .chunk.show { opacity: 1; transform: translateY(0); }
 
         /* --- HERO --- */
         .hero { text-align: center; }
-        .hero h1 { font-family: 'Space Grotesk'; font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; line-height: 0.95; margin-bottom: 30px; }
+        .hero h1 { font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 700; line-height: 1; margin-bottom: 25px; }
         .hero h1 span { color: var(--primary); }
         .ip-box {
             display: inline-flex; align-items: center; gap: 15px;
             background: var(--bg-card); border: 1px solid var(--border);
-            padding: 12px 25px; border-radius: 100px; cursor: pointer; transition: 0.3s;
+            padding: 14px 30px; border-radius: 100px; cursor: pointer; transition: 0.3s;
         }
-        .ip-box:hover { border-color: var(--primary); background: rgba(255,140,0,0.05); }
 
-        /* --- MODE SELECTION --- */
-        .mode-card {
+        /* --- GRID SKLEPU --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 50px; }
+        .card {
             background: var(--bg-card); border: 1px solid var(--border);
-            padding: 50px; border-radius: 32px; max-width: 500px; margin: 40px auto;
-            text-align: center; cursor: pointer; transition: 0.4s;
+            padding: 40px; border-radius: 24px; text-align: left; transition: 0.4s;
         }
-        .mode-card:hover { border-color: var(--primary); transform: translateY(-10px); }
-
-        /* --- NOWY PANEL ZAKUPU (Z SUWAKIEM) --- */
-        .shop-container { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; max-width: 1100px; margin: 0 auto; text-align: left; }
-        .main-box { background: var(--bg-card); border-radius: 24px; padding: 40px; border: 1px solid var(--border); }
-        .side-box { background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); text-align: center; }
+        .card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        .price { font-size: 2rem; font-weight: 900; color: var(--primary); margin: 20px 0; }
         
-        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0; }
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
-        label { font-size: 0.7rem; font-weight: 800; color: #666; text-transform: uppercase; }
-        input { background: var(--input); border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; outline: none; transition: 0.3s; }
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 12px; font-weight: 800; transition: 0.3s; cursor: pointer; }
+        .btn-primary { background: var(--primary); color: black; }
+
+        /* --- PANEL ZAMÓWIENIA (TEN NOWY) --- */
+        .shop-container { display: grid; grid-template-columns: 1.7fr 1fr; gap: 30px; max-width: 1100px; margin: 0 auto; text-align: left; }
+        .main-box { background: var(--bg-card); border-radius: 30px; padding: 45px; border: 1px solid var(--border); }
+        .side-box { background: var(--bg-card); border-radius: 30px; padding: 35px; border: 1px solid var(--border); text-align: center; height: fit-content; }
+        
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+        label { font-size: 0.7rem; font-weight: 800; color: #555; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 16px; border-radius: 14px; color: white; outline: none; transition: 0.3s; }
         input:focus { border-color: var(--primary); }
 
-        .slider-box { background: var(--input); padding: 25px; border-radius: 15px; margin: 25px 0; }
-        input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+        .slider-box { background: #0a0a0a; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid var(--border); }
+        input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; margin-top: 15px; }
 
         .pay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
-        .pay-method { background: var(--input); border: 2px solid var(--border); padding: 15px; border-radius: 15px; cursor: pointer; text-align: center; transition: 0.3s; opacity: 0.6; }
+        .pay-method { background: #0a0a0a; border: 2px solid var(--border); padding: 18px; border-radius: 18px; cursor: pointer; text-align: center; transition: 0.3s; opacity: 0.5; }
         .pay-method.active { border-color: var(--primary); opacity: 1; background: rgba(255,140,0,0.05); }
-        .pay-method i { display: block; font-size: 1.2rem; margin-bottom: 5px; color: var(--primary); }
-        .pay-method span { font-size: 0.7rem; font-weight: 800; }
+        .pay-method i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
-        .btn-pay { width: 100%; background: var(--primary); color: black; border: none; padding: 20px; border-radius: 15px; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 20px; }
-        .btn-pay:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,140,0,0.3); }
+        .skin-img { height: 220px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8)); margin: 20px 0; transition: 0.5s; }
 
-        /* --- SKIN PREVIEW --- */
-        .skin-img { height: 200px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); margin: 20px 0; }
-
-        footer { padding: 100px 8% 50px; text-align: center; border-top: 1px solid var(--border); margin-top: 50px; }
+        footer { padding: 80px 8% 40px; text-align: center; border-top: 1px solid var(--border); margin-top: 100px; opacity: 0.6; }
 
         @media (max-width: 900px) {
             .shop-container { grid-template-columns: 1fr; }
@@ -109,12 +108,12 @@
         }
     </style>
 </head>
-<body onload="init()">
+<body onload="startApp()">
 
 <div class="bg-glow"></div>
 
 <div id="loader">
-    <img src="darthbox.png" style="width: 80px; border-radius: 15px;">
+    <img src="darthbox.png" class="loader-logo">
     <div class="loader-bar"><div class="loader-progress"></div></div>
 </div>
 
@@ -133,51 +132,77 @@
 
 <div id="home" class="page active">
     <div class="chunk hero">
-        <img src="darthbox.png" style="width: 180px; border-radius: 40px; margin-bottom: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.5);">
-        <h1>NAJLEPSZY<br><span>SKYPRAC</span> W POLSCE</h1>
-        <p style="color: #666; max-width: 600px; margin: 0 auto 40px;">Dołącz do elitarnej społeczności graczy. Unikalna ekonomia i zero lagów.</p>
+        <img src="darthbox.png" style="width: 150px; border-radius: 35px; margin-bottom: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.5);">
+        <h1>LEGENDARNY<br><span>SKYPRAC</span> W POLSCE</h1>
+        <p style="color: #888; font-size: 1.1rem; margin-bottom: 40px;">Dołącz do elitarnej społeczności graczy. Unikalna ekonomia i zero lagów.</p>
         <div class="ip-box" onclick="copyIP()">
             <i class="fas fa-terminal" style="color: var(--primary)"></i>
-            <span id="ip-text" style="font-weight: 900; font-family: 'Space Grotesk';">IP: DARTHBOX.PL</span>
+            <span id="ip-text" style="font-weight: 900; letter-spacing: 1px;">IP: DARTHBOX.PL</span>
         </div>
     </div>
 </div>
 
 <div id="modes" class="page">
     <div class="chunk" style="text-align: center;">
-        <h2 style="font-family: 'Space Grotesk'; font-size: 3rem; margin-bottom: 20px;">WYBIERZ <span style="color:var(--primary)">SERWER</span></h2>
-        <div class="mode-card" onclick="go('shop')">
-            <i class="fas fa-fire" style="font-size: 4rem; color: var(--primary); margin-bottom: 25px;"></i>
-            <h3 style="font-size: 2rem; margin-bottom: 10px;">FLAMEHUB</h3>
-            <p style="color: #888;">SkyPrac + Unikalna Ekonomia. Kliknij, aby wejść do sklepu.</p>
-            <div style="margin-top: 30px; background: var(--primary); color: #000; padding: 15px; border-radius: 12px; font-weight: 800;">OTWÓRZ OFERTY</div>
+        <h2 style="font-family: 'Space Grotesk'; font-size: 3rem; margin-bottom: 50px;">WYBIERZ <span style="color:var(--primary)">SERWER</span></h2>
+        <div class="card" onclick="go('shop-items')" style="max-width: 500px; margin: 0 auto; cursor: pointer; border: 1px solid var(--primary); text-align: center;">
+            <i class="fas fa-fire" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; display: block;"></i>
+            <h3>FLAMEHUB</h3>
+            <p style="color: #888;">SkyPrac + Unikalna Ekonomia. Najpopularniejszy tryb.</p>
+            <button class="btn btn-primary" style="margin-top: 30px;">PRZEJDŹ DO OFERT</button>
         </div>
     </div>
 </div>
 
-<div id="shop" class="page">
+<div id="shop-items" class="page">
+    <div class="chunk">
+        <h2 style="font-family: 'Space Grotesk'; font-size: 2.5rem; text-align: center; margin-bottom: 40px;">DOSTĘPNE <span style="color:var(--primary)">USŁUGI</span></h2>
+        <div class="grid">
+            <div class="card">
+                <h3>RANGA DARTH</h3>
+                <p style="color: #777;">Ekskluzywne uprawnienia i unikalny prefix.</p>
+                <div class="price">30.00 PLN</div>
+                <button class="btn btn-primary" onclick="openPayment('RANGA DARTH', 30, false)">WYBIERZ</button>
+            </div>
+            <div class="card">
+                <h3>KLUCZ DARTHBOX</h3>
+                <p style="color: #777;">Otwórz skrzynię i wygraj legendarne itemy.</p>
+                <div class="price">10.00 PLN</div>
+                <button class="btn btn-primary" onclick="openPayment('KLUCZ DARTHBOX', 10, true)">WYBIERZ</button>
+            </div>
+            <div class="card">
+                <h3>KLUCZ LEGENDARNY</h3>
+                <p style="color: #777;">Rzadkie przedmioty tylko z tej skrzyni.</p>
+                <div class="price">6.00 PLN</div>
+                <button class="btn btn-primary" onclick="openPayment('KLUCZ LEGENDARNY', 6, true)">WYBIERZ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="checkout" class="page">
     <div class="chunk">
         <div class="shop-container">
             <div class="main-box">
-                <h2 style="font-family: 'Space Grotesk'; font-size: 2rem;"><i class="fas fa-wallet" style="color:var(--primary)"></i> DOŁADOWANIE PORTFELA</h2>
+                <h2 style="font-family: 'Space Grotesk'; font-size: 1.8rem;" id="item-name">ZAKUP</h2>
                 
                 <div class="grid-inputs">
                     <div class="input-group">
-                        <label>Nick z serwera</label>
+                        <label>Nick z gry</label>
                         <input type="text" id="nickInput" placeholder="Twój nick..." oninput="updateSkin()">
                     </div>
                     <div class="input-group">
                         <label>E-mail</label>
-                        <input type="email" placeholder="email@przyklad.pl">
+                        <input type="email" placeholder="twoj@email.pl">
                     </div>
                 </div>
 
-                <div class="slider-box">
-                    <div style="display:flex; justify-content:space-between; margin-bottom: 15px; font-weight: 800;">
-                        <span>KWOTA DOŁADOWANIA</span>
-                        <span style="color:var(--primary)"><span id="amountDisplay">1</span> PLN</span>
+                <div id="qty-container" class="slider-box" style="display: none;">
+                    <div style="display:flex; justify-content:space-between; font-weight: 900;">
+                        <span>ILOŚĆ:</span>
+                        <span style="color:var(--primary)" id="qtyDisplay">1</span>
                     </div>
-                    <input type="range" id="amountSlider" min="1" max="200" value="1" oninput="updateAmount(this.value)">
+                    <input type="range" id="qtySlider" min="1" max="100" value="1" oninput="updateQty(this.value)">
                 </div>
 
                 <label>Metoda płatności</label>
@@ -186,36 +211,30 @@
                         <i class="fas fa-mobile-alt"></i><span>BLIK</span>
                     </div>
                     <div class="pay-method" onclick="setPay(this)">
-                        <i class="fas fa-shield-alt"></i><span>PSC</span>
+                        <i class="fas fa-credit-card"></i><span>PSC</span>
                     </div>
                     <div class="pay-method" onclick="setPay(this)">
                         <i class="fas fa-university"></i><span>PRZELEW</span>
                     </div>
                 </div>
 
-                <div class="input-group" style="margin-top: 20px;">
-                    <label>Kod rabatowy (Opcjonalnie)</label>
-                    <input type="text" placeholder="Wpisz kod jeśli posiadasz">
-                </div>
-
-                <div style="margin-top: 25px; display: flex; gap: 10px; align-items: flex-start;">
-                    <input type="checkbox" id="rulesCheck" style="width: 20px; height: 20px;">
-                    <label for="rulesCheck" style="text-transform: none; color: #888; font-weight: 400;">
-                        Akceptuję regulamin. Rozumiem, że <b>muszę być online na serwerze</b> w momencie zakupu.
+                <div style="display: flex; gap: 12px; margin: 30px 0;">
+                    <input type="checkbox" id="rulesCheck" style="width: 20px; height: 20px; cursor: pointer;">
+                    <label for="rulesCheck" style="text-transform: none; color: #777; font-weight: 400; cursor: pointer;">
+                        Akceptuję regulamin serwera. Rozumiem, że płatność jest bezzwrotna.
                     </label>
                 </div>
 
-                <button class="btn-pay" onclick="handlePay()">ZAPŁAĆ <span id="btnPrice">1.00</span> PLN</button>
+                <button class="btn btn-primary" style="padding: 22px; font-size: 1.1rem;" onclick="handlePay()">ZAPŁAĆ <span id="finalPrice">0.00</span> PLN</button>
             </div>
 
             <div class="side-box">
-                <img src="darthbox.png" style="width: 80px; margin-bottom: 20px;">
-                <h4 style="letter-spacing: 1px; color: var(--primary);">TWÓJ SKIN</h4>
-                <div class="skin-wrap">
-                    <img src="https://mc-heads.net/body/MHF_Question" id="playerSkin" class="skin-img">
+                <h4 style="letter-spacing: 2px; font-size: 0.7rem; color: var(--primary); font-weight: 900;">PODGLĄD POSTACI</h4>
+                <img src="https://mc-heads.net/body/MHF_Question" id="playerSkin" class="skin-img">
+                <p id="playerNickDisplay" style="font-weight: 800; font-size: 1.3rem;">Nieznany</p>
+                <div style="margin-top: 20px; padding: 15px; background: #000; border-radius: 12px; font-size: 0.75rem; color: #555; text-align: left; border: 1px solid var(--border);">
+                    Status: <span style="color: var(--primary)">Wymagany online</span>
                 </div>
-                <p id="playerNickDisplay" style="font-weight: 800; font-size: 1.2rem;">Nieznany</p>
-                <p style="font-size: 0.7rem; color: #ff4444; margin-top: 10px; font-weight: 800;">STATUS: WYMAGANY ONLINE</p>
             </div>
         </div>
     </div>
@@ -224,38 +243,34 @@
 <div id="rules" class="page">
     <div class="chunk">
         <h2 style="font-family: 'Space Grotesk'; font-size: 3rem; text-align: center; margin-bottom: 40px;">REGULAMIN</h2>
-        <div style="background: var(--bg-card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); max-width: 800px; margin: 0 auto;">
-            <p style="margin-bottom: 15px;"><b>1.</b> Zakupione usługi nie podlegają zwrotowi.</p>
-            <p style="margin-bottom: 15px;"><b>2.</b> Gracz musi znajdować się na serwerze podczas zakupu.</p>
-            <p style="margin-bottom: 15px;"><b>3.</b> Administracja nie odpowiada za błędnie wpisany nick.</p>
-            <p><b>4.</b> Wszelkie reklamacje rozpatrujemy na naszym Discordzie.</p>
+        <div style="background: var(--bg-card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); max-width: 800px; margin: 0 auto; color: #aaa;">
+            <p style="margin-bottom: 15px;">1. Zakupione usługi cyfrowe nie podlegają zwrotowi.</p>
+            <p style="margin-bottom: 15px;">2. Gracz ma obowiązek przebywać na serwerze podczas zakupu.</p>
+            <p>3. Nieznajomość regulaminu nie zwalnia z jego przestrzegania.</p>
         </div>
     </div>
 </div>
 
 <footer>
-    <div class="chunk">
-        <a href="https://dc.darthbox.pl" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: 800; font-size: 1.2rem; display: block; margin-bottom: 20px;">
-            <i class="fab fa-discord"></i> DC.DARTHBOX.PL
-        </a>
-        <p style="color: #444; font-size: 0.8rem;">&copy; 2026 DARTHBOX.PL — WSZELKIE PRAWA ZASTRZEŻONE</p>
-    </div>
+    <p style="color: #444; font-size: 0.8rem; font-weight: 700;">&copy; 2026 DARTHBOX.PL — WSZELKIE PRAWA ZASTRZEŻONE</p>
 </footer>
 
 <script>
-    function init() {
+    let basePrice = 0;
+    let hasQty = false;
+
+    function startApp() {
         setTimeout(() => {
             const loader = document.getElementById('loader');
             loader.style.opacity = '0';
-            setTimeout(() => { loader.style.display = 'none'; reveal(); }, 800);
+            setTimeout(() => { loader.style.display = 'none'; reveal(); }, 600);
         }, 1500);
     }
 
     function reveal() {
-        const chunks = document.querySelectorAll('.page.active .chunk');
-        chunks.forEach((c, i) => {
-            setTimeout(() => c.classList.add('show'), i * 150);
-        });
+        const activePage = document.querySelector('.page.active');
+        const chunks = activePage.querySelectorAll('.chunk');
+        chunks.forEach((c, i) => { setTimeout(() => c.classList.add('show'), i * 100); });
     }
 
     function go(id) {
@@ -264,18 +279,23 @@
             p.querySelectorAll('.chunk').forEach(c => c.classList.remove('show'));
         });
         document.getElementById(id).classList.add('active');
-        reveal();
         window.scrollTo(0, 0);
+        setTimeout(reveal, 50);
     }
 
-    function updateAmount(val) {
-        document.getElementById('amountDisplay').innerText = val;
-        document.getElementById('btnPrice').innerText = parseFloat(val).toFixed(2);
+    function openPayment(name, price, qtyEnabled) {
+        basePrice = price;
+        hasQty = qtyEnabled;
+        document.getElementById('item-name').innerText = name;
+        document.getElementById('qty-container').style.display = qtyEnabled ? 'block' : 'none';
+        document.getElementById('qtySlider').value = 1;
+        updateQty(1);
+        go('checkout');
     }
 
-    function setPay(el) {
-        document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
-        el.classList.add('active');
+    function updateQty(val) {
+        document.getElementById('qtyDisplay').innerText = val;
+        document.getElementById('finalPrice').innerText = (basePrice * val).toFixed(2);
     }
 
     function updateSkin() {
@@ -291,6 +311,11 @@
         }
     }
 
+    function setPay(el) {
+        document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
+        el.classList.add('active');
+    }
+
     function copyIP() {
         navigator.clipboard.writeText("DarthBox.PL");
         document.getElementById('ip-text').innerText = "SKOPIOWANO!";
@@ -299,9 +324,9 @@
 
     function handlePay() {
         const nick = document.getElementById('nickInput').value;
-        if(!nick) return alert("Podaj swój nick!");
-        if(!document.getElementById('rulesCheck').checked) return alert("Musisz zaakceptować regulamin!");
-        alert("Płatność rozpoczęta dla gracza: " + nick);
+        if(!nick) return alert("Podaj nick!");
+        if(!document.getElementById('rulesCheck').checked) return alert("Zaakceptuj regulamin!");
+        alert("Inicjowanie płatności dla gracza: " + nick);
     }
 </script>
 
