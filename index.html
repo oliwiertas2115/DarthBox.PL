@@ -4,268 +4,290 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarthBox.PL — Serwer Minecraft</title>
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
     <style>
         :root {
             --primary: #ff8c00;
-            --primary-glow: rgba(255, 140, 0, 0.4);
-            --bg-deep: #080808;
+            --primary-glow: rgba(255, 140, 0, 0.5);
+            --bg-deep: #050505;
             --bg-card: #111111;
             --text-main: #f0f0f0;
             --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; }
 
-        /* --- BACKGROUND --- */
-        .bg-glow {
-            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; height: 60vh; background: radial-gradient(circle, rgba(255,140,0,0.1) 0%, rgba(8,8,8,0) 70%);
-            z-index: -1; pointer-events: none;
-        }
-
+        /* --- TŁO: CZĄSTECZKI I SKINY --- */
+        #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        
         .bg-skin {
-            position: fixed; height: 80vh; opacity: 0.15; z-index: -1; pointer-events: none;
-            filter: drop-shadow(0 0 20px var(--primary-glow));
+            position: fixed; height: 80vh; opacity: 0.2; z-index: 0; pointer-events: none;
+            filter: drop-shadow(0 0 30px var(--primary-glow));
+            animation: float 6s ease-in-out infinite;
         }
         .skin-left { left: -5%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
-        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); }
+        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); animation-delay: 3s; }
 
-        /* --- NAVIGATION --- */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* --- NAWIGACJA --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
-            background: rgba(8, 8, 8, 0.8);
+            background: rgba(5, 5, 5, 0.8);
         }
         .logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: white; }
-        .logo img { width: 32px; border-radius: 6px; }
+        .logo img { width: 35px; border-radius: 8px; border: 1px solid var(--primary); }
+
+        .player-count {
+            background: rgba(0, 255, 0, 0.1); border: 1px solid #00ff00; color: #00ff00;
+            padding: 6px 15px; border-radius: 100px; font-size: 0.75rem; font-weight: 800;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
         .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; transition: 0.3s; cursor: pointer; text-transform: uppercase; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 800; transition: 0.3s; cursor: pointer; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); }
 
-        /* --- PAGES --- */
-        .page { display: none; padding: 100px 5% 50px; min-height: 100vh; max-width: 1200px; margin: 0 auto; }
+        /* --- STRONY --- */
+        .page { display: none; padding: 130px 5% 50px; min-height: 100vh; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
         .page.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- HERO (HOME) --- */
-        .hero { text-align: center; padding-top: 10vh; }
-        .welcome-label { font-size: 1.2rem; letter-spacing: 4px; font-weight: 500; margin-bottom: 10px; color: #fff; }
-        .brand-title { font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 800; line-height: 1; margin-bottom: 40px; }
-        .brand-title span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
-        .hero-btns { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        
+        /* --- HERO --- */
+        .hero { text-align: center; margin-top: 5vh; }
+        .brand-title { font-family: 'Space Grotesk'; font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; line-height: 1; margin-bottom: 30px; }
+        .brand-title span { color: var(--primary); text-shadow: 0 0 40px var(--primary-glow); }
+
+        /* --- GŁÓWNE LOGO NA STRONIE HOME --- */
+        .hero-logo {
+            width: clamp(150px, 30vw, 250px); /* Responsywny rozmiar */
+            height: auto;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 40px var(--primary-glow);
+            margin-bottom: 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .hero-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px var(--primary-glow);
+        }
+
         .btn {
             background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: white;
-            padding: 16px 32px; border-radius: 12px; font-weight: 800; text-decoration: none;
-            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; cursor: pointer;
+            padding: 16px 35px; border-radius: 12px; font-weight: 800; transition: 0.3s; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
         }
-        .btn:hover { background: var(--primary); color: black; transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 10px 20px var(--primary-glow); }
-        .btn-discord { background: #5865F2; border: none; }
-        .btn-discord:hover { background: #4752c4; color: white; }
+        .btn:hover { background: var(--primary); color: black; transform: translateY(-5px); box-shadow: 0 10px 30px var(--primary-glow); }
 
-        /* --- SKLEP MODES --- */
-        .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
+        /* --- SKLEP I FORMULARZ --- */
         .mode-card {
-            background: var(--bg-card); padding: 40px; border-radius: 20px; border: 1px solid var(--border);
-            text-align: center; cursor: pointer; transition: 0.3s;
+            background: var(--bg-card); padding: 50px; border-radius: 25px; border: 1px solid var(--border);
+            text-align: center; cursor: pointer; transition: 0.4s; max-width: 400px; margin: 0 auto;
         }
-        .mode-card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        .mode-card i { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
+        .mode-card:hover { border-color: var(--primary); transform: translateY(-10px); }
 
-        /* --- SKLEP FORM --- */
         .shop-container { display: grid; grid-template-columns: 1fr 350px; gap: 30px; margin-top: 30px; }
         .form-box { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
-        .input-group { margin-bottom: 20px; }
-        label { display: block; font-size: 0.7rem; font-weight: 800; color: #666; text-transform: uppercase; margin-bottom: 8px; }
-        input[type="text"], input[type="email"] {
-            width: 100%; background: #000; border: 1px solid var(--border); padding: 14px; border-radius: 10px; color: white; outline: none;
+        input { 
+            width: 100%; background: #000; border: 1px solid var(--border); padding: 15px; 
+            border-radius: 10px; color: white; outline: none; transition: 0.3s;
         }
         input:focus { border-color: var(--primary); }
-        .slider-container { margin: 30px 0; }
-        input[type="range"] { width: 100%; accent-color: var(--primary); }
-        
-        .summary-box { background: #1a1a1a; padding: 25px; border-radius: 20px; text-align: center; height: fit-content; }
-        .skin-preview { height: 180px; margin-bottom: 15px; }
+        label { font-size: 0.7rem; font-weight: 800; color: #555; display: block; margin: 15px 0 5px; }
 
-        /* --- TOP DOŁADOWANIA --- */
-        .empty-state { text-align: center; padding: 60px; color: #555; border: 2px dashed var(--border); border-radius: 20px; }
+        .summary-box { background: #0c0c0c; padding: 30px; border-radius: 20px; border: 1px solid var(--border); text-align: center; }
 
-        /* --- REGULAMIN --- */
-        .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .rule-card { background: var(--bg-card); padding: 25px; border-radius: 15px; border: 1px solid var(--border); }
-        .rule-card h4 { color: var(--primary); margin-bottom: 10px; font-family: 'Space Grotesk'; }
-        .rule-card ul { list-style: none; color: #aaa; font-size: 0.9rem; }
-
-        /* --- MOBILE --- */
+        /* --- MOBILNOŚĆ --- */
         @media (max-width: 900px) {
-            .bg-skin { display: none; }
-            .nav-links { gap: 10px; }
-            .nav-links a { font-size: 0.65rem; }
             .shop-container { grid-template-columns: 1fr; }
-            .brand-title { font-size: 3rem; }
-            .hero-btns .btn { width: 100%; justify-content: center; }
+            .bg-skin { display: none; }
+            .nav-links { display: none; } /* Uproszczenie dla mobile */
         }
     </style>
 </head>
-<body onload="init()">
+<body>
 
-<div class="bg-glow"></div>
+<div id="particles-js"></div>
 <div class="bg-skin skin-left"></div>
 <div class="bg-skin skin-right"></div>
 
 <nav>
     <a class="logo" onclick="go('home')">
-        <img src="https://i.imgur.com/vHqLhWJ.png" onerror="this.src='https://mc-heads.net/avatar/MHF_Question'">
-        <span style="font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: -1px;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
+        <img src="https://i.imgur.com/vHqLhWJ.png" alt="DarthBox Logo">
+        <span style="font-family: 'Space Grotesk'; font-weight: 700;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
     </a>
+    <div class="player-count">
+        <div class="dot"></div>
+        ONLINE: <span id="count">0</span>
+    </div>
     <div class="nav-links">
-        <a onclick="go('home')" id="l-home">Home</a>
-        <a onclick="go('shop')" id="l-shop">Sklep</a>
-        <a onclick="go('donations')" id="l-donations">Top</a>
-        <a onclick="go('rules')" id="l-rules">Regulamin</a>
+        <a onclick="go('home')">HOME</a>
+        <a onclick="go('shop')">SKLEP</a>
+        <a onclick="go('donations')">TOP</a>
+        <a onclick="go('rules')">REGULAMIN</a>
     </div>
 </nav>
 
 <div id="home" class="page active">
     <div class="hero">
-        <p class="welcome-label">WITAJ NA</p>
+        <p style="letter-spacing: 5px; opacity: 0.6; margin-bottom: 10px;">SERWER MINECRAFT</p>
         <h1 class="brand-title">DARTHBOX<span>.PL</span></h1>
-        <div class="hero-btns">
-            <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-basket"></i> SKLEP SERWERA</button>
-            <button class="btn" onclick="go('donations')"><i class="fas fa-trophy"></i> TOP DOŁADOWANIA</button>
-            <a href="https://discord.gg/TWOJLINK" target="_blank" class="btn btn-discord"><i class="fab fa-discord"></i> DISCORD</a>
+        
+        <img src="https://i.imgur.com/vHqLhWJ.png" alt="DarthBox Logo" class="hero-logo" onclick="go('home')">
+        
+        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-cart"></i> SKLEP</button>
+            <button class="btn" onclick="go('donations')"><i class="fas fa-trophy"></i> TOP</button>
         </div>
     </div>
 </div>
 
 <div id="shop" class="page">
-    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 10px;">WYBIERZ <span style="color:var(--primary)">SERWER</span></h2>
-    <p style="text-align: center; color: #666; margin-bottom: 40px;">Wszystkie przedmioty trafiają do Twojego portfela w grze.</p>
-    
-    <div class="mode-grid">
-        <div class="mode-card" onclick="go('shop-item')">
-            <i class="fas fa-fire"></i>
-            <h3>FlameHUB SkyPrac</h3>
-            <p style="color: #555; font-size: 0.8rem; margin-top: 10px;">KLIKNIJ ABY WEJŚĆ</p>
-        </div>
+    <h2 style="text-align: center; margin-bottom: 40px; font-family: 'Space Grotesk';">WYBIERZ <span style="color:var(--primary)">TRYB</span></h2>
+    <div class="mode-card" onclick="go('item-page')">
+        <i class="fas fa-fire" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
+        <h3>FlameHUB SkyPrac</h3>
+        <p style="color: #444; margin-top: 10px; font-size: 0.8rem;">KLIKNIJ ABY PRZEJŚĆ</p>
     </div>
 </div>
 
-<div id="shop-item" class="page">
-    <button class="btn" onclick="go('shop')" style="padding: 10px 20px; font-size: 0.7rem; margin-bottom: 20px;"><i class="fas fa-arrow-left"></i> POWRÓT</button>
-    
+<div id="item-page" class="page">
     <div class="shop-container">
         <div class="form-box">
-            <h3 style="margin-bottom: 25px; font-family: 'Space Grotesk';">DOŁADOWANIE PORTFELA</h3>
+            <h3 style="font-family: 'Space Grotesk';">DOŁADOWANIE PORTFELA</h3>
             
-            <div class="input-group">
-                <label>NICK Z GRY (WYMAGANE)</label>
-                <input type="text" id="mc-nick" placeholder="Twój nick..." oninput="updateSkin()">
-            </div>
-
-            <div class="input-group">
-                <label>E-MAIL (WYMAGANE)</label>
-                <input type="email" id="user-email" placeholder="email@przyklad.pl">
-            </div>
-
-            <div class="slider-container">
-                <label>ILOŚĆ DOŁADOWANIA: <span id="amount-val" style="color:var(--primary)">1</span> PLN</label>
-                <input type="range" min="1" max="100" value="1" oninput="document.getElementById('amount-val').innerText = this.value; document.getElementById('total-val').innerText = this.value">
-            </div>
-
-            <div class="input-group">
-                <label>KOD RABATOWY (OPCJONALNIE)</label>
-                <input type="text" placeholder="Wpisz kod...">
-            </div>
+            <label>NICK Z SERWERA</label>
+            <input type="text" id="nick" placeholder="Wpisz nick..." oninput="updatePreview()">
+            
+            <label>E-MAIL</label>
+            <input type="email" id="email" placeholder="twoj@email.pl">
+            
+            <label>KWOTA: <span id="price-label" style="color:var(--primary)">1</span> PLN</label>
+            <input type="range" id="amount" min="1" max="100" value="1" step="1" oninput="updatePrice(this.value)">
+            
+            <label>KOD RABATOWY (OPCJONALNIE)</label>
+            <input type="text" placeholder="KOD...">
         </div>
 
         <div class="summary-box">
-            <img src="https://mc-heads.net/body/MHF_Question" class="skin-preview" id="skin-img">
-            <p id="nick-preview" style="font-weight: 800; color: #888;">Nieznana postać</p>
-            <div style="margin: 20px 0; border-top: 1px dashed #333; padding-top: 20px;">
-                <p style="font-size: 0.8rem; color: #666;">Do zapłaty:</p>
-                <h2 style="color:var(--primary); font-size: 2.5rem;"><span id="total-val">1</span> PLN</h2>
+            <img src="https://mc-heads.net/body/MHF_Question" id="preview-img" style="height: 200px; margin-bottom: 15px;">
+            <h4 id="preview-nick" style="margin-bottom: 20px;">Nieznany</h4>
+            <div style="border-top: 1px dashed #222; padding-top: 20px; margin-bottom: 20px;">
+                <p style="font-size: 0.8rem; color: #555;">SUMA:</p>
+                <h2 style="color: var(--primary); font-size: 2.5rem;"><span id="total">1</span> PLN</h2>
             </div>
-            <button class="btn" style="width: 100%; justify-content: center; background: var(--primary); color: black;" onclick="buy()">ZAPŁAĆ TERAZ</button>
+            <button class="btn" style="width: 100%; background: var(--primary); color: black; justify-content: center;" onclick="finish()">ZAPŁAĆ TERAZ</button>
         </div>
     </div>
 </div>
 
 <div id="donations" class="page">
-    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 40px;">TOP <span style="color:var(--primary)">DOŁADOWANIA</span></h2>
-    <div class="empty-state">
-        <i class="fas fa-ghost" style="font-size: 3rem; margin-bottom: 20px; display: block;"></i>
-        <p>Obecnie lista jest pusta. Bądź pierwszym, który wesprze serwer!</p>
+    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem;">TOP <span style="color:var(--primary)">DOŁADOWANIA</span></h2>
+    <div style="text-align: center; padding: 100px; opacity: 0.3;">
+        <i class="fas fa-history" style="font-size: 4rem; margin-bottom: 20px;"></i>
+        <p>Brak ostatnich doładowań.</p>
     </div>
 </div>
 
 <div id="rules" class="page">
-    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 40px;">REGULAMIN <span style="color:var(--primary)">SERWERA</span></h2>
-    <div class="rules-grid">
-        <div class="rule-card">
-            <h4>1. Postanowienia ogólne</h4>
-            <ul>
-                <li>• Korzystanie z serwera oznacza akceptację regulaminu.</li>
-                <li>• Administracja nie odpowiada za utracone przedmioty przez błędy graczy.</li>
-            </ul>
-        </div>
-        <div class="rule-card">
-            <h4>2. Zasady płatności</h4>
-            <ul>
-                <li>• Płatności są dobrowolną formą wsparcia serwera.</li>
-                <li>• Doładowania są przypisywane do nicku w grze.</li>
-            </ul>
-        </div>
+    <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); padding: 40px; border-radius: 20px; border: 1px solid var(--border);">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">Regulamin DarthBox.PL</h2>
+        <p>1. Zakupione usługi są przypisane do nicku.<br>2. Płatności nie podlegają zwrotowi.<br>3. Administracja zastrzega sobie prawo do zmian w regulaminie.</p>
     </div>
 </div>
 
 <script>
-    function init() {
-        // Podstawowa inicjalizacja
-    }
+    // 1. CZĄSTECZKI
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 60 },
+            "color": { "value": "#ff8c00" },
+            "opacity": { "value": 0.2 },
+            "size": { "value": 3 },
+            "line_linked": { "enable": true, "distance": 150, "color": "#ff8c00", "opacity": 0.1, "width": 1 },
+            "move": { "enable": true, "speed": 1.5 }
+        },
+        "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
+    });
 
+    // 2. LICZNIK GRACZY (Podstaw adres IP swojego serwera)
+    async function fetchPlayers() {
+        try {
+            const res = await fetch('https://api.mcstatus.io/v2/status/java/darthbox.pl');
+            const data = await res.json();
+            document.getElementById('count').innerText = data.players ? data.players.online : "0";
+        } catch (e) { document.getElementById('count').innerText = "OFF"; }
+    }
+    setInterval(fetchPlayers, 10000);
+    fetchPlayers();
+
+    // 3. NAWIGACJA
     function go(id) {
-        // Ukryj wszystkie strony
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        // Pokaż wybraną
         document.getElementById(id).classList.add('active');
-        // Zmień linki w menu
-        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-        const link = document.getElementById('l-' + (id.includes('shop') ? 'shop' : id));
-        if(link) link.classList.add('active');
-        // Przewiń na górę
-        window.scrollTo(0, 0);
+        window.scrollTo(0,0);
     }
 
-    function updateSkin() {
-        const nick = document.getElementById('mc-nick').value;
-        const img = document.getElementById('skin-img');
-        const txt = document.getElementById('nick-preview');
-        
+    // 4. PODGLĄD SKINA
+    function updatePreview() {
+        const nick = document.getElementById('nick').value;
         if(nick.length > 2) {
-            img.src = `https://mc-heads.net/body/${nick}`;
-            txt.innerText = nick;
-            txt.style.color = "#ff8c00";
+            document.getElementById('preview-img').src = `https://mc-heads.net/body/${nick}`;
+            document.getElementById('preview-nick').innerText = nick;
         } else {
-            img.src = `https://mc-heads.net/body/MHF_Question`;
-            txt.innerText = "Nieznana postać";
-            txt.style.color = "#888";
+            document.getElementById('preview-img').src = `https://mc-heads.net/body/MHF_Question`;
+            document.getElementById('preview-nick').innerText = "Nieznany";
         }
     }
 
-    function buy() {
-        const nick = document.getElementById('mc-nick').value;
-        const email = document.getElementById('user-email').value;
+    function updatePrice(val) {
+        document.getElementById('price-label').innerText = val;
+        document.getElementById('total').innerText = val;
+    }
+
+    // 5. FINALIZACJA I DISCORD
+    function finish() {
+        const nick = document.getElementById('nick').value;
+        const kwota = document.getElementById('total').innerText;
         
-        if(!nick || !email) {
-            alert("Proszę uzupełnić Nick oraz E-mail!");
+        if(!nick || !document.getElementById('email').value) {
+            alert("Uzupełnij Nick i E-mail!");
             return;
         }
+
+        // --- TUTAJ WKLEJ SWÓJ WEBHOOK DISCORD ---
+        // Pamiętaj, że webhook w kodzie jest widoczny dla każdego!
+        const webhook = "TWOJ_WEBHOOK_URL_TUTAJ"; 
+        
+        if(webhook.includes("http")) { // Prosta walidacja czy webhook został podany
+            fetch(webhook, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    embeds: [{
+                        title: "🛒 ROZPOCZĘTO ZAKUP",
+                        description: `Gracz **${nick}** chce doładować **${kwota} PLN**`,
+                        color: 16747520 // Kolor pomarańczowy
+                    }]
+                })
+            });
+        }
+
         alert("Przekierowanie do bramki płatności dla: " + nick);
+        // TUTAJ WSTAW PRZEKIEROWANIE DO TEBEX/INNEJ BRAMKI PŁATNOŚCI
+        // Przykład: window.location.href = `https://darthbox.tebex.io/checkout/pack/12345?quantity=${kwota}&username=${nick}`;
     }
 </script>
 
