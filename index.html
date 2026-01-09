@@ -12,115 +12,123 @@
     <style>
         :root {
             --primary: #ff8c00;
-            --primary-glow: rgba(255, 140, 0, 0.7);
+            --primary-glow: rgba(255, 140, 0, 0.5);
             --bg-deep: #050505;
-            --bg-card: rgba(10, 10, 10, 0.95);
-            --border: rgba(255, 255, 255, 0.1);
+            --bg-card: rgba(15, 15, 15, 0.95);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-deep); color: white; overflow-x: hidden; }
 
-        /* --- PRELOADER --- */
+        /* --- PRELOADER Z ANIMACJĄ LOGO --- */
         #loader {
             position: fixed; inset: 0; background: var(--bg-deep);
             display: flex; align-items: center; justify-content: center;
-            z-index: 9999; transition: 0.6s ease;
+            z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s;
         }
-        .loader-logo { width: 100px; animation: pulse 1.5s infinite; filter: drop-shadow(0 0 20px var(--primary)); }
+        .loader-logo { 
+            width: 120px; 
+            filter: drop-shadow(0 0 30px var(--primary));
+            animation: loaderPulse 1.8s infinite ease-in-out; 
+        }
+        @keyframes loaderPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px var(--primary-glow)); }
+            50% { transform: scale(1.25); filter: drop-shadow(0 0 45px var(--primary)); }
+        }
+        .loader-hidden { opacity: 0; visibility: hidden; }
 
-        /* --- ANIMACJA IKONY SERWERA --- */
-        @keyframes logoFloat {
-            0% { transform: translateY(0) rotate(0deg) scale(1); filter: drop-shadow(0 0 20px var(--primary-glow)); }
-            50% { transform: translateY(-15px) rotate(3deg) scale(1.05); filter: drop-shadow(0 0 40px var(--primary)); }
-            100% { transform: translateY(0) rotate(0deg) scale(1); filter: drop-shadow(0 0 20px var(--primary-glow)); }
-        }
-        .hero-logo { 
-            width: clamp(140px, 35vw, 200px); 
-            margin-bottom: 15px; 
-            animation: logoFloat 4s infinite ease-in-out;
-            cursor: pointer;
-        }
-
-        /* --- TŁO --- */
+        /* --- TŁO I SKINY --- */
         #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
         .bg-skin { 
             position: fixed; height: 80vh; opacity: 0.15; z-index: 0; pointer-events: none; 
-            filter: drop-shadow(0 0 40px var(--primary-glow)); animation: float 6s infinite ease-in-out; 
+            filter: drop-shadow(0 0 30px var(--primary-glow));
         }
         .skin-left { left: -5%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
-        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); animation-delay: 3s; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); }
 
         /* --- NAWIGACJA --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px);
+            z-index: 1000; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--border);
         }
         .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: white; font-weight: 800; font-family: 'Space Grotesk'; }
         .nav-logo img { width: 32px; }
 
-        /* --- LICZNIK GRACZY ONLINE --- */
-        .status-bar {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            padding: 8px 20px;
-            border-radius: 50px;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 20px;
-            backdrop-filter: blur(5px);
-        }
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #00ff88;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #00ff88;
-            animation: dotPulse 1.5s infinite;
-        }
-        @keyframes dotPulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
-        .status-text { font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
-
         /* --- STRONY --- */
         .page { display: none; padding: 110px 5% 50px; min-height: 100vh; position: relative; z-index: 10; text-align: center; }
-        .page.active { display: block; animation: fadeIn 0.4s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .page.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- LOGO W HERO --- */
+        .hero-logo { width: clamp(140px, 30vw, 190px); margin-bottom: 15px; filter: drop-shadow(0 0 25px var(--primary-glow)); animation: floatLogo 4s infinite ease-in-out; }
+        @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* --- LICZNIK GRACZY --- */
+        .status-bar {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+            padding: 8px 18px; border-radius: 50px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 25px;
+        }
+        .dot { width: 8px; height: 8px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88; animation: dotPulse 1.5s infinite; }
+        @keyframes dotPulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.3); } 100% { opacity: 1; transform: scale(1); } }
 
         /* --- PRZYCISKI --- */
-        .btn-group { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
         .btn {
             background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: white;
-            padding: 14px 28px; border-radius: 12px; font-weight: 800; cursor: pointer;
-            transition: 0.3s; display: flex; align-items: center; gap: 10px;
-            text-decoration: none; font-size: 0.85rem; width: clamp(180px, 80vw, 250px); justify-content: center;
+            padding: 14px 30px; border-radius: 12px; font-weight: 800; cursor: pointer;
+            transition: 0.3s; display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 0.85rem;
         }
-        .btn:hover { background: var(--primary); color: black; transform: translateY(-3px); box-shadow: 0 10px 25px var(--primary-glow); }
+        .btn:hover { background: var(--primary); color: black; box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-2px); }
 
         /* --- TIMER --- */
-        .timer-grid { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+        .timer-grid { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
         .t-card { 
-            background: rgba(0,0,0,0.85); border: 1px solid var(--border); 
-            width: clamp(65px, 21vw, 85px); height: clamp(80px, 24vw, 100px);
-            border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.8); border: 1px solid var(--border); 
+            width: 75px; height: 95px; border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .t-num { font-family: 'Space Grotesk'; font-size: clamp(1.8rem, 6vw, 2.4rem); color: var(--primary); font-weight: 800; line-height: 1; }
-        .t-label { font-size: 0.55rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 800; }
+        .t-num { font-family: 'Space Grotesk'; font-size: 2rem; color: var(--primary); font-weight: 800; }
+        .t-label { font-size: 0.55rem; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+        /* --- SKLEP --- */
+        .shop-container { display: grid; grid-template-columns: 1fr 380px; gap: 20px; text-align: left; max-width: 1000px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; position: relative; }
         
-        /* SKLEP */
-        .shop-container { display: grid; grid-template-columns: 1fr 360px; gap: 20px; text-align: left; max-width: 1000px; margin: 0 auto; }
-        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; }
-        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; margin-top: 8px; outline: none; }
+        input { 
+            width: 100%; background: #000; border: 1px solid var(--border); padding: 14px; 
+            border-radius: 12px; color: white; margin-top: 8px; outline: none; transition: 0.3s;
+        }
+        input:focus { 
+            border-color: var(--primary); 
+            animation: borderGlow 2s infinite alternate;
+        }
+        @keyframes borderGlow {
+            from { border-color: var(--primary); box-shadow: 0 0 10px rgba(255, 140, 0, 0.2); }
+            to { border-color: #ffcc00; box-shadow: 0 0 20px rgba(255, 140, 0, 0.4); }
+        }
+
+        .skin-view { height: 220px; perspective: 1000px; display: flex; align-items: center; justify-content: center; }
+        #skin-img { 
+            height: 100%; 
+            animation: skinFloat 4s infinite ease-in-out, skinRotate 10s infinite linear; 
+        }
+        @keyframes skinFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes skinRotate { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+
+        .range-box { margin-top: 25px; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 15px; border: 1px solid var(--border); }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: #222; border-radius: 5px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); cursor: pointer; }
 
         @media (max-width: 850px) { .shop-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body onload="endLoad()">
 
-<div id="loader"><img src="https://i.imgur.com/kBq0aVY.png" class="loader-logo"></div>
+<div id="loader">
+    <img src="https://i.imgur.com/kBq0aVY.png" class="loader-logo">
+</div>
 
 <div id="particles-js"></div>
 <div class="bg-skin skin-left"></div>
@@ -131,30 +139,27 @@
         <img src="https://i.imgur.com/kBq0aVY.png">
         <span>DARTHBOX<span style="color:var(--primary)">.PL</span></span>
     </a>
-    <button class="btn" style="width:auto; padding: 8px 15px; font-size: 0.7rem;" onclick="copyIP()">IP: DARTHBOX.PL</button>
+    <button class="btn" style="padding: 8px 15px; font-size: 0.7rem;" onclick="copyIP()">IP: DARTHBOX.PL</button>
 </nav>
 
 <div id="home" class="page active">
     <img src="https://i.imgur.com/kBq0aVY.png" class="hero-logo">
     <h1 style="font-family: 'Space Grotesk'; font-size: clamp(1.8rem, 8vw, 3.5rem); text-transform: uppercase;">WITAJ NA <span style="color:var(--primary)">DARTHBOX</span></h1>
-    
     <div class="status-bar">
         <div class="dot"></div>
-        <div class="status-text">GRACZY ONLINE: <span id="p-count" style="color:var(--primary)">...</span></div>
+        <div style="font-size: 0.75rem; font-weight: 800;">GRACZY ONLINE: <span id="p-count" style="color:var(--primary)">0</span></div>
     </div>
-
-    <div class="btn-group">
-        <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-basket"></i> SKLEP</button>
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+        <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-basket"></i> SKLEP SERWERA</button>
         <a href="https://dc.darthbox.pl" target="_blank" class="btn" style="background:#5865F2; border:none;"><i class="fab fa-discord"></i> DISCORD</a>
     </div>
-
-    <div style="margin-top: 40px;">
-        <p style="font-size: 0.65rem; font-weight: 800; color: var(--primary); letter-spacing: 2px;">START EDYCJI ZA:</p>
+    <div style="margin-top: 50px;">
+        <p style="font-size: 0.6rem; font-weight: 800; color: var(--primary); letter-spacing: 3px;">START EDYCJI ZA:</p>
         <div class="timer-grid">
             <div class="t-card"><span class="t-num" id="d">00</span><span class="t-label">Dni</span></div>
             <div class="t-card"><span class="t-num" id="h">00</span><span class="t-label">Godz</span></div>
             <div class="t-card"><span class="t-num" id="m">00</span><span class="t-label">Min</span></div>
-            <div class="t-card" style="border-color:var(--primary)"><span class="t-num" id="s" style="text-shadow: 0 0 10px var(--primary);">00</span><span class="t-label">Sek</span></div>
+            <div class="t-card" style="border-color: var(--primary);"><span class="t-num" id="s">00</span><span class="t-label">Sek</span></div>
         </div>
     </div>
 </div>
@@ -162,42 +167,62 @@
 <div id="shop" class="page">
     <div class="shop-container">
         <div class="card">
-            <h2 style="font-family: 'Space Grotesk'; margin-bottom: 15px;">DOŁADUJ PORTFEL</h2>
-            <input type="text" id="nick" oninput="updateSkin()" placeholder="Twój nick z Minecraft...">
-            <input type="email" placeholder="Twój e-mail...">
-            <div style="margin-top: 20px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
-                <span style="font-size: 0.8rem;">KWOTA: <span style="color:var(--primary)" id="val">1</span> PLN</span>
-                <input type="range" min="1" max="100" value="1" oninput="sync(this.value)" style="accent-color: var(--primary);">
-                <input type="text" placeholder="KOD RABATOWY">
+            <h2 style="font-family: 'Space Grotesk'; font-size: 1.8rem; margin-bottom: 20px;">DOŁADUJ PORTFEL</h2>
+            <input type="text" id="nick" oninput="updateSkin()" placeholder="Twój nick z gry...">
+            <input type="email" placeholder="Twój adres e-mail...">
+            <div class="range-box">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <span style="font-weight: 800; font-size: 0.85rem;">KWOTA:</span>
+                    <span style="color: var(--primary); font-weight: 800; font-size: 1.1rem;"><span id="val">1</span> PLN</span>
+                </div>
+                <input type="range" min="1" max="200" value="1" oninput="sync(this.value)">
             </div>
         </div>
         <div class="card" style="text-align: center;">
-            <img src="https://mc-heads.net/body/MHF_Question" id="skin-img" style="height: 180px; margin-bottom: 15px;">
-            <div style="padding: 12px; background: #000; border-radius: 12px; border: 1px solid var(--primary);">
-                <span id="total" style="font-size: 2rem; font-weight: 800; color: var(--primary);">1.00</span> <span style="color:var(--primary)">PLN</span>
+            <div class="skin-view"><img src="https://mc-heads.net/body/MHF_Question" id="skin-img"></div>
+            <div style="width: 100%; background: #000; padding: 20px; border-radius: 15px; border: 1px solid var(--primary); margin-top: 20px;">
+                <span id="total" style="font-size: 2.5rem; font-family: 'Space Grotesk'; color: var(--primary);">1.00</span> <span style="color:var(--primary); font-weight: 800;">PLN</span>
             </div>
-            <button class="btn" style="width: 100%; margin-top: 15px; background: var(--primary); color: black;" onclick="alert('Płatności wkrótce!')">KUP TERAZ</button>
+            <button class="btn" style="width: 100%; margin-top: 15px; background: var(--primary); color: black; justify-content: center;" onclick="alert('Płatności wkrótce!')">KUP TERAZ</button>
         </div>
     </div>
 </div>
 
 <script>
-    function endLoad() { setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display='none', 600); }, 1000); }
-    function go(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+    // ŁADOWANIE STRONY
+    function endLoad() {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+            loader.classList.add('loader-hidden');
+        }, 1500); // Czas trwania animacji ładowania
+    }
 
-    // STATUS LIVE
+    function go(id) { 
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
+        document.getElementById(id).classList.add('active'); 
+        window.scrollTo(0,0); 
+    }
+
+    function sync(v) {
+        document.getElementById('val').innerText = v;
+        document.getElementById('total').innerText = v + ".00";
+    }
+
+    function updateSkin() {
+        const n = document.getElementById('nick').value;
+        if(n.length > 2) document.getElementById('skin-img').src = `https://mc-heads.net/body/${n}`;
+    }
+
     function fetchOnline() {
-        fetch('https://api.mcsrvstat.us/2/darthbox.pl')
-            .then(r => r.json())
-            .then(d => { document.getElementById('p-count').innerText = d.online ? d.players.online : "0"; })
-            .catch(() => document.getElementById('p-count').innerText = "0");
+        fetch('https://api.mcsrvstat.us/2/darthbox.pl').then(r => r.json()).then(d => {
+            document.getElementById('p-count').innerText = d.online ? d.players.online : "0";
+        }).catch(() => {});
     }
     setInterval(fetchOnline, 30000); fetchOnline();
 
-    // TIMER
-    let lastV = { d:"", h:"", m:"", s:"" };
+    let last = { d:"", h:"", m:"", s:"" };
     function updateT() {
-        const target = new Date("Jan 20, 2026 18:00:00").getTime(); // ZMIEŃ DATĘ TUTAJ
+        const target = new Date("Jan 20, 2026 18:00:00").getTime();
         const diff = target - new Date().getTime();
         if(diff > 0) {
             const v = {
@@ -206,16 +231,15 @@
                 m: Math.floor((diff/60000)%60).toString().padStart(2,'0'),
                 s: Math.floor((diff/1000)%60).toString().padStart(2,'0')
             };
-            for(let k in v) { if(lastV[k] !== v[k]) { document.getElementById(k).innerText = v[k]; lastV[k] = v[k]; } }
+            for(let k in v) { if(last[k] !== v[k]) { document.getElementById(k).innerText = v[k]; last[k] = v[k]; } }
         }
     }
     setInterval(updateT, 1000); updateT();
 
-    function sync(v) { document.getElementById('val').innerText = v; document.getElementById('total').innerText = v + ".00"; }
-    function updateSkin() { const n = document.getElementById('nick').value; if(n.length > 2) document.getElementById('skin-img').src = `https://mc-heads.net/body/${n}`; }
-    function copyIP() { navigator.clipboard.writeText("darthbox.pl"); alert("IP SKOPIOWANO!"); }
+    function copyIP() { navigator.clipboard.writeText("darthbox.pl"); alert("SKOPIOWANO IP!"); }
 
-    particlesJS("particles-js", { "particles": { "number": { "value": 50 }, "color": { "value": "#ff8c00" }, "opacity": { "value": 0.2 }, "size": { "value": 2 }, "line_linked": { "enable": true, "distance": 120, "color": "#ff8c00", "opacity": 0.1 }, "move": { "enable": true, "speed": 1 } } });
+    particlesJS("particles-js", { "particles": { "number": { "value": 40 }, "color": { "value": "#ff8c00" }, "opacity": { "value": 0.2 }, "size": { "value": 2 }, "line_linked": { "enable": true, "distance": 120, "color": "#ff8c00", "opacity": 0.1 }, "move": { "enable": true, "speed": 1 } } });
 </script>
+
 </body>
 </html>
