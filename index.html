@@ -15,7 +15,7 @@
             --primary: #ff8c00;
             --primary-glow: rgba(255, 140, 0, 0.6);
             --bg-deep: #050505;
-            --bg-card: rgba(17, 17, 17, 0.9);
+            --bg-card: rgba(15, 15, 15, 0.95);
             --text-main: #f0f0f0;
             --border: rgba(255, 255, 255, 0.1);
         }
@@ -23,21 +23,30 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
         body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; }
 
-        /* --- TŁO I CZĄSTECZKI --- */
+        /* --- 1. EKRAN ŁADOWANIA (PRELOADER) --- */
+        #loader {
+            position: fixed; inset: 0; background: var(--bg-deep);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .loader-logo { width: 120px; animation: pulseLogo 2s infinite ease-in-out; filter: drop-shadow(0 0 20px var(--primary)); }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+        .loader-bar { width: 200px; height: 3px; background: #111; border-radius: 10px; margin-top: 20px; overflow: hidden; }
+        .loader-progress { width: 0%; height: 100%; background: var(--primary); box-shadow: 0 0 15px var(--primary); animation: loadProgress 2.5s forwards ease-in-out; }
+        @keyframes loadProgress { to { width: 100%; } }
+
+        /* --- 2. TŁO, CZĄSTECZKI I SKINY --- */
         #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-        
         .bg-skin {
-            position: fixed; height: 70vh; opacity: 0.25; z-index: 0; pointer-events: none;
+            position: fixed; height: 75vh; opacity: 0.2; z-index: 0; pointer-events: none;
             filter: drop-shadow(0 0 30px var(--primary-glow));
             animation: float 6s ease-in-out infinite;
         }
-        /* Widoczne również na mobile, ale mniejsze */
-        .skin-left { left: -10%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
-        .skin-right { right: -10%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); animation-delay: 3s; }
+        .skin-left { left: -5%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
+        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); animation-delay: 3s; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
 
-        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(2deg); } }
-
-        /* --- NAWIGACJA --- */
+        /* --- 3. NAWIGACJA --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -46,86 +55,63 @@
         }
         .logo { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: white; }
         .logo img { width: 40px; filter: drop-shadow(0 0 5px var(--primary)); }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 800; transition: 0.3s; cursor: pointer; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--primary); }
 
-        .player-count {
-            background: rgba(0, 255, 0, 0.1); border: 1px solid #00ff00; color: #00ff00;
-            padding: 8px 16px; border-radius: 12px; font-size: 0.75rem; font-weight: 800;
-            display: flex; align-items: center; gap: 8px; box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+        /* --- 4. STRONY I ANIMACJE --- */
+        .page { display: none; padding: 140px 5% 50px; min-height: 100vh; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
+        .page.active { display: block; animation: pageIn 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes pageIn { from { opacity: 0; transform: scale(0.98) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* --- 5. ZEGAR (TIMER) --- */
+        .timer-container {
+            display: inline-flex; gap: 15px; background: rgba(255,140,0,0.05); padding: 25px; 
+            border-radius: 25px; border: 1px solid var(--primary); margin-bottom: 40px;
+            box-shadow: 0 0 40px rgba(255,140,0,0.1);
         }
-        .dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+        .timer-box { text-align: center; min-width: 70px; }
+        .timer-val { font-family: 'Space Grotesk'; font-size: 2.8rem; color: var(--primary); display: block; line-height: 1; }
+        .timer-label { font-size: 0.65rem; font-weight: 800; color: #666; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* --- STRONY --- */
-        .page { display: none; padding: 120px 5% 50px; min-height: 100vh; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
-        .page.active { display: block; animation: pageIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        @keyframes pageIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        /* --- HERO --- */
-        .hero { text-align: center; }
-        .brand-title { font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; margin-bottom: 20px; text-transform: uppercase; }
-        .brand-title span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
-
-        .hero-logo {
-            width: 220px; height: auto; margin-bottom: 30px; cursor: pointer;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 0 20px var(--primary-glow));
-        }
-        .hero-logo:hover { transform: scale(1.1) rotate(3deg); filter: drop-shadow(0 0 40px var(--primary)); }
-
-        /* --- PRZYCISKI --- */
-        .btn-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        /* --- 6. PRZYCISKI --- */
         .btn {
             background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); color: white;
             padding: 16px 32px; border-radius: 14px; font-weight: 800; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
-            transition: 0.4s; position: relative; overflow: hidden;
+            transition: 0.4s; display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
         }
-        .btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,140,0,0.2), transparent);
-            transition: 0.5s;
-        }
-        .btn:hover { background: var(--primary); color: black; transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 15px 35px var(--primary-glow); }
-        .btn:hover::before { left: 100%; }
+        .btn:hover { background: var(--primary); color: black; transform: translateY(-5px); box-shadow: 0 10px 30px var(--primary-glow); }
         .btn-dc { background: #5865F2; border: none; }
-        .btn-dc:hover { background: #4752c4; box-shadow: 0 15px 35px rgba(88, 101, 242, 0.4); }
+        .btn-dc:hover { background: #4752c4; box-shadow: 0 10px 30px rgba(88, 101, 242, 0.4); }
 
-        /* --- SUWAK (RANGE) --- */
-        .slider-wrap { margin: 25px 0; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px; border: 1px solid var(--border); }
-        input[type=range] {
-            -webkit-appearance: none; width: 100%; background: transparent;
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%; height: 8px; cursor: pointer; background: #222; border-radius: 10px;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            height: 24px; width: 24px; border-radius: 50%; background: var(--primary);
-            cursor: pointer; -webkit-appearance: none; margin-top: -8px;
-            box-shadow: 0 0 15px var(--primary); transition: 0.2s;
-        }
-        input[type=range]:active::-webkit-slider-thumb { transform: scale(1.2); box-shadow: 0 0 25px var(--primary); }
-
-        /* --- SKLEP CONTAINER --- */
-        .shop-box { display: grid; grid-template-columns: 1fr 380px; gap: 30px; align-items: start; }
+        /* --- 7. SKLEP I SUWAK --- */
         .card { background: var(--bg-card); padding: 35px; border-radius: 24px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+        .shop-box { display: grid; grid-template-columns: 1fr 380px; gap: 30px; }
         
-        input[type=text], input[type=email] {
-            width: 100%; background: #000; border: 1px solid var(--border); padding: 16px; 
-            border-radius: 12px; color: white; margin-top: 8px; transition: 0.3s;
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 20px 0; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: #222; border-radius: 10px; }
+        input[type=range]::-webkit-slider-thumb { 
+            height: 24px; width: 24px; border-radius: 50%; background: var(--primary); 
+            cursor: pointer; -webkit-appearance: none; margin-top: -8px; box-shadow: 0 0 15px var(--primary);
         }
-        input:focus { border-color: var(--primary); background: rgba(255,140,0,0.05); }
 
-        /* --- MOBILE OPTIMIZATION --- */
-        @media (max-width: 850px) {
+        input[type=text], input[type=email] {
+            width: 100%; background: #000; border: 1px solid var(--border); padding: 16px; border-radius: 12px; color: white; margin-top: 8px;
+        }
+
+        @media (max-width: 900px) {
             .shop-box { grid-template-columns: 1fr; }
-            .skin-left { height: 40vh; left: -15%; opacity: 0.15; }
-            .skin-right { height: 40vh; right: -15%; opacity: 0.15; }
-            .nav-links { display: none; }
-            .brand-title { font-size: 2.5rem; }
+            .bg-skin { height: 40vh; opacity: 0.1; }
         }
     </style>
 </head>
-<body>
+<body onload="startSite()">
+
+<div id="loader">
+    <img src="https://i.imgur.com/kBq0aVY.png" class="loader-logo">
+    <div class="loader-bar"><div class="loader-progress"></div></div>
+    <p style="margin-top: 15px; font-size: 0.7rem; letter-spacing: 3px; color: #444; font-weight: 800;">WCZYTYWANIE DARTHBOX...</p>
+</div>
 
 <div id="particles-js"></div>
 <div class="bg-skin skin-left"></div>
@@ -133,40 +119,44 @@
 
 <nav>
     <a class="logo" onclick="go('home')">
-        <img src="https://i.imgur.com/kBq0aVY.png" alt="Logo">
-        <span style="font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: -1px;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
+        <img src="https://i.imgur.com/kBq0aVY.png">
+        <span style="font-family: 'Space Grotesk'; font-weight: 700;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
     </a>
-    <div class="player-count">
-        <div class="dot"></div>
-        ONLINE: <span id="count">...</span>
-    </div>
     <div class="nav-links">
         <a onclick="go('home')">Home</a>
-        <a onclick="go('shop')">Sklep</a>
-        <a onclick="go('donations')">Top</a>
+        <a onclick="go('shop-start')">Sklep</a>
         <a onclick="go('rules')">Regulamin</a>
+        <button class="btn" style="padding: 8px 15px; font-size: 0.7rem;" onclick="copyIP()">IP: DARTHBOX.PL</button>
     </div>
 </nav>
 
 <div id="home" class="page active">
-    <div class="hero">
-        <img src="https://i.imgur.com/kBq0aVY.png" alt="DarthBox Logo" class="hero-logo" onclick="go('home')">
-        <h1 class="brand-title">Witaj na <span>DarthBox</span></h1>
-        <div class="btn-container">
-            <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-bag"></i> SKLEP SERWERA</button>
-            <a href="https://dc.darthbox.pl" target="_blank" class="btn btn-dc"><i class="fab fa-discord"></i> DOŁĄCZ NA DISCORD</a>
-            <button class="btn" onclick="go('donations')"><i class="fas fa-medal"></i> TOP DOŁADOWANIA</button>
+    <div style="text-align: center;">
+        <img src="https://i.imgur.com/kBq0aVY.png" style="width: 200px; margin-bottom: 20px; filter: drop-shadow(0 0 20px var(--primary-glow));">
+        <h1 style="font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 4.5rem); text-transform: uppercase;">Wielki <span style="color:var(--primary)">Start!</span></h1>
+        <p style="margin-bottom: 35px; opacity: 0.6; font-weight: 600; letter-spacing: 2px;">SOBOTA GODZINA 18:00</p>
+
+        <div class="timer-container">
+            <div class="timer-box"><span class="timer-val" id="days">00</span><span class="timer-label">Dni</span></div>
+            <div class="timer-box"><span class="timer-val" id="hours">00</span><span class="timer-label">Godz</span></div>
+            <div class="timer-box"><span class="timer-val" id="min">00</span><span class="timer-label">Min</span></div>
+            <div class="timer-box"><span class="timer-val" id="sec" style="color: white; text-shadow: 0 0 15px var(--primary);">00</span><span class="timer-label">Sek</span></div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button class="btn" onclick="go('shop-start')"><i class="fas fa-shopping-basket"></i> PRZEJDŹ DO SKLEPU</button>
+            <a href="https://dc.darthbox.pl" target="_blank" class="btn btn-dc"><i class="fab fa-discord"></i> DISCORD SERWERA</a>
         </div>
     </div>
 </div>
 
-<div id="shop" class="page">
-    <h2 style="text-align: center; margin-bottom: 40px; font-family: 'Space Grotesk'; font-size: 2.5rem;">WYBIERZ <span style="color:var(--primary)">TRYB GRY</span></h2>
+<div id="shop-start" class="page">
+    <h2 style="text-align: center; margin-bottom: 40px; font-family: 'Space Grotesk'; font-size: 2.5rem;">WYBIERZ <span style="color:var(--primary)">TRYB</span></h2>
     <div style="max-width: 400px; margin: 0 auto;" class="card" onclick="go('buy-page')">
         <div style="text-align: center; cursor: pointer;">
-            <i class="fas fa-fire-alt" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
+            <i class="fas fa-fire" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
             <h3>FlameHUB SkyPrac</h3>
-            <p style="color: #666; margin-top: 10px;">Kliknij, aby otworzyć ofertę</p>
+            <p style="color: #666; margin-top: 10px;">DOŁADOWANIE PORTFELA</p>
         </div>
     </div>
 </div>
@@ -174,83 +164,54 @@
 <div id="buy-page" class="page">
     <div class="shop-box">
         <div class="card">
-            <h3 style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
-                <i class="fas fa-wallet" style="color: var(--primary);"></i> Doładowanie Portfela
-            </h3>
+            <h3 style="margin-bottom: 25px;"><i class="fas fa-wallet" style="color: var(--primary);"></i> DOŁADUJ PORTFEL</h3>
+            <label style="font-size: 0.7rem; font-weight: 800; color: #555;">TWÓJ NICK</label>
+            <input type="text" id="nick" placeholder="Wpisz nick..." oninput="updatePreview()">
             
-            <div style="margin-bottom: 20px;">
-                <label style="font-size: 0.75rem; font-weight: 800; color: #777;">TWOJA NAZWA Z MINECRAFT</label>
-                <input type="text" id="nick" placeholder="Wpisz nick..." oninput="updatePreview()">
-            </div>
+            <label style="font-size: 0.7rem; font-weight: 800; color: #555; margin-top: 20px; display: block;">E-MAIL</label>
+            <input type="email" id="email" placeholder="twoj@email.pl">
 
-            <div style="margin-bottom: 20px;">
-                <label style="font-size: 0.75rem; font-weight: 800; color: #777;">ADRES E-MAIL</label>
-                <input type="email" id="email" placeholder="email@przyklad.pl">
-            </div>
-
-            <div class="slider-wrap">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                    <label style="font-size: 0.75rem; font-weight: 800; color: #777;">KWOTA DOŁADOWANIA</label>
+            <div style="margin-top: 30px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="font-weight: 800; font-size: 0.8rem;">KWOTA:</span>
                     <span style="color: var(--primary); font-weight: 800;"><span id="val">1</span> PLN</span>
                 </div>
                 <input type="range" id="price-slider" min="1" max="100" value="1" oninput="syncPrice(this.value)">
             </div>
-
-            <div style="margin-bottom: 20px;">
-                <label style="font-size: 0.75rem; font-weight: 800; color: #777;">KOD RABATOWY (OPCJONALNIE)</label>
-                <input type="text" placeholder="Wpisz kod...">
-            </div>
         </div>
 
         <div class="card" style="text-align: center;">
-            <div id="loading-skin" style="display: none; margin-bottom: 20px;"><i class="fas fa-spinner fa-spin"></i> Ładowanie...</div>
-            <img src="https://mc-heads.net/body/MHF_Question" id="prev-img" style="height: 220px; margin-bottom: 15px;">
-            <h4 id="prev-nick" style="margin-bottom: 20px; color: #aaa;">Nieznany Gracz</h4>
-            
+            <img src="https://mc-heads.net/body/MHF_Question" id="prev-img" style="height: 220px; margin-bottom: 15px; transition: 0.3s;">
+            <h4 id="prev-nick" style="margin-bottom: 20px;">Nieznany</h4>
             <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                <p style="font-size: 0.8rem; color: #555;">DO ZAPŁATY:</p>
+                <p style="font-size: 0.8rem; color: #555;">SUMA:</p>
                 <h2 style="font-size: 2.5rem; color: var(--primary);"><span id="total">1.00</span> PLN</h2>
             </div>
-
-            <button class="btn" style="width: 100%; justify-content: center; background: var(--primary); color: black;" onclick="handlePayment()">
-                PROCESUJ PŁATNOŚĆ
-            </button>
+            <button class="btn" style="width: 100%; justify-content: center; background: var(--primary); color: black;" onclick="pay()">ZAPŁAĆ TERAZ</button>
         </div>
-    </div>
-</div>
-
-<div id="donations" class="page">
-    <h2 style="text-align: center; font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 40px;">LISTA <span style="color:var(--primary)">DOŁADOWAŃ</span></h2>
-    <div class="card" style="text-align: center; padding: 60px;">
-        <i class="fas fa-ghost" style="font-size: 3rem; margin-bottom: 20px; color: #333;"></i>
-        <p style="color: #555;">Jeszcze nikt nie doładował portfela. Bądź pierwszy!</p>
     </div>
 </div>
 
 <div id="rules" class="page">
     <div class="card" style="max-width: 800px; margin: 0 auto;">
         <h2 style="color: var(--primary); margin-bottom: 20px;">Regulamin DarthBox.PL</h2>
-        <p style="color: #aaa; line-height: 1.8;">
-            1. Usługi są cyfrowe i aktywowane automatycznie.<br>
-            2. Nie odpowiadamy za literówki w nicku.<br>
-            3. Płatności obsługiwane są przez bezpieczne bramki.
+        <p style="color: #888; line-height: 1.8;">
+            1. Usługi są cyfrowe i nie podlegają zwrotowi.<br>
+            2. Po zakupie komenda wykonuje się automatycznie.<br>
+            3. W razie problemów zapraszamy na Discord.
         </p>
     </div>
 </div>
 
 <script>
-    // 1. CZĄSTECZKI
-    particlesJS("particles-js", {
-        "particles": {
-            "number": { "value": 70 },
-            "color": { "value": "#ff8c00" },
-            "opacity": { "value": 0.3 },
-            "size": { "value": 3 },
-            "line_linked": { "enable": true, "distance": 150, "color": "#ff8c00", "opacity": 0.1, "width": 1 },
-            "move": { "enable": true, "speed": 1.5 }
-        },
-        "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
-    });
+    // 1. PRELOADER
+    function startSite() {
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.visibility = 'hidden', 800);
+        }, 2500);
+    }
 
     // 2. NAWIGACJA
     function go(id) {
@@ -259,72 +220,60 @@
         window.scrollTo(0,0);
     }
 
-    // 3. LICZNIK GRACZY
-    async function updatePlayers() {
-        try {
-            const r = await fetch('https://api.mcstatus.io/v2/status/java/darthbox.pl');
-            const d = await r.json();
-            document.getElementById('count').innerText = d.players ? d.players.online : "0";
-        } catch (e) { document.getElementById('count').innerText = "OFFLINE"; }
-    }
-    updatePlayers(); setInterval(updatePlayers, 20000);
+    // 3. TIMER
+    function updateTimer() {
+        const now = new Date().getTime();
+        const target = new Date();
+        target.setDate(target.getDate() + (6 - target.getDay())); // Najbliższa sobota
+        target.setHours(18, 0, 0, 0);
 
-    // 4. PŁYNNY SUWAK I ŁADOWANIE
+        const diff = target - now;
+        if (diff > 0) {
+            document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('min').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById('sec').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }
+    }
+    setInterval(updateTimer, 1000); updateTimer();
+
+    // 4. SKLEP FUNKCJE
     function syncPrice(v) {
         document.getElementById('val').innerText = v;
         document.getElementById('total').innerText = v + ".00";
     }
 
-    let timeout = null;
     function updatePreview() {
-        const nick = document.getElementById('nick').value;
-        const img = document.getElementById('prev-img');
-        const loader = document.getElementById('loading-skin');
-        
-        clearTimeout(timeout);
-        if(nick.length > 2) {
-            loader.style.display = "block";
-            img.style.opacity = "0.3";
-            
-            timeout = setTimeout(() => {
-                img.src = `https://mc-heads.net/body/${nick}`;
-                document.getElementById('prev-nick').innerText = nick;
-                document.getElementById('prev-nick').style.color = "#ff8c00";
-                img.onload = () => {
-                    loader.style.display = "none";
-                    img.style.opacity = "1";
-                };
-            }, 800);
+        const n = document.getElementById('nick').value;
+        if(n.length > 2) {
+            document.getElementById('prev-img').src = `https://mc-heads.net/body/${n}`;
+            document.getElementById('prev-nick').innerText = n;
         }
     }
 
-    // 5. PŁATNOŚĆ I DISCORD
-    function handlePayment() {
-        const nick = document.getElementById('nick').value;
-        const amount = document.getElementById('val').innerText;
-        
-        if(!nick || !document.getElementById('email').value) {
-            alert("⚠️ Uzupełnij nick i e-mail przed zakupem!");
-            return;
-        }
-
-        const webhook = "TUTAJ_WKLEJ_SWOJ_WEBHOOK_URL";
-        if(webhook.includes("http")) {
-            fetch(webhook, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    embeds: [{
-                        title: "🛒 Nowa próba zakupu!",
-                        description: `Gracz **${nick}** próbuje doładować **${amount} PLN**`,
-                        color: 16747520,
-                        timestamp: new Date()
-                    }]
-                })
-            });
-        }
-        alert(`🚀 Przekierowanie... Przygotowuję komendę: aportfel add ${nick} ${amount}`);
+    function copyIP() {
+        navigator.clipboard.writeText("darthbox.pl");
+        alert("Skopiowano IP: darthbox.pl");
     }
+
+    function pay() {
+        const nick = document.getElementById('nick').value;
+        const kwota = document.getElementById('val').innerText;
+        if(!nick || !document.getElementById('email').value) { alert("Uzupełnij dane!"); return; }
+        alert(`Przekierowanie... Komenda: aportfel add ${nick} ${kwota}`);
+    }
+
+    // 5. PARTICLES
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 80 },
+            "color": { "value": "#ff8c00" },
+            "opacity": { "value": 0.2 },
+            "size": { "value": 3 },
+            "line_linked": { "enable": true, "distance": 150, "color": "#ff8c00", "opacity": 0.1 },
+            "move": { "enable": true, "speed": 1.5 }
+        }
+    });
 </script>
 
 </body>
