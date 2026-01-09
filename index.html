@@ -28,7 +28,19 @@
             z-index: 9999; transition: 0.6s ease;
         }
         .loader-logo { width: 100px; animation: pulse 1.5s infinite; filter: drop-shadow(0 0 20px var(--primary)); }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* --- ANIMACJA IKONY SERWERA --- */
+        @keyframes logoFloat {
+            0% { transform: translateY(0) rotate(0deg) scale(1); filter: drop-shadow(0 0 20px var(--primary-glow)); }
+            50% { transform: translateY(-15px) rotate(3deg) scale(1.05); filter: drop-shadow(0 0 40px var(--primary)); }
+            100% { transform: translateY(0) rotate(0deg) scale(1); filter: drop-shadow(0 0 20px var(--primary-glow)); }
+        }
+        .hero-logo { 
+            width: clamp(140px, 35vw, 200px); 
+            margin-bottom: 15px; 
+            animation: logoFloat 4s infinite ease-in-out;
+            cursor: pointer;
+        }
 
         /* --- TŁO --- */
         #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
@@ -50,86 +62,60 @@
         .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: white; font-weight: 800; font-family: 'Space Grotesk'; }
         .nav-logo img { width: 32px; }
 
+        /* --- LICZNIK GRACZY ONLINE --- */
+        .status-bar {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+            animation: dotPulse 1.5s infinite;
+        }
+        @keyframes dotPulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        .status-text { font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+
         /* --- STRONY --- */
         .page { display: none; padding: 110px 5% 50px; min-height: 100vh; position: relative; z-index: 10; text-align: center; }
         .page.active { display: block; animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero-logo { width: clamp(140px, 35vw, 200px); margin-bottom: 15px; filter: drop-shadow(0 0 25px var(--primary-glow)); }
-
         /* --- PRZYCISKI --- */
-        .btn-group { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 25px 0; }
+        .btn-group { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
         .btn {
             background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: white;
             padding: 14px 28px; border-radius: 12px; font-weight: 800; cursor: pointer;
             transition: 0.3s; display: flex; align-items: center; gap: 10px;
-            text-decoration: none; font-size: 0.85rem; width: clamp(200px, 80vw, 280px); justify-content: center;
+            text-decoration: none; font-size: 0.85rem; width: clamp(180px, 80vw, 250px); justify-content: center;
         }
         .btn:hover { background: var(--primary); color: black; transform: translateY(-3px); box-shadow: 0 10px 25px var(--primary-glow); }
-        .btn-discord { background: #5865F2; border: none; }
 
-        /* --- NAPRAWIONY TIMER --- */
-        .timer-section { margin-top: 40px; }
-        .timer-grid { 
-            display: flex; 
-            justify-content: center; 
-            gap: clamp(6px, 2vw, 15px); 
-            margin-top: 15px; 
-            padding: 0 10px;
-        }
+        /* --- TIMER --- */
+        .timer-grid { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
         .t-card { 
-            background: rgba(0,0,0,0.85); 
-            border: 1px solid var(--border); 
-            width: clamp(65px, 21vw, 85px); 
-            height: clamp(80px, 24vw, 100px);
-            border-radius: 12px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            background: rgba(0,0,0,0.85); border: 1px solid var(--border); 
+            width: clamp(65px, 21vw, 85px); height: clamp(80px, 24vw, 100px);
+            border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .t-num-container {
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
-        .t-num { 
-            font-family: 'Space Grotesk'; 
-            font-size: clamp(1.8rem, 6vw, 2.4rem); 
-            color: var(--primary); 
-            font-weight: 800;
-            line-height: 1;
-        }
-        .t-label { 
-            font-size: 0.55rem; 
-            color: #666; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            margin-top: 4px;
-            font-weight: 800;
-        }
-        .active-sek { border-color: var(--primary); box-shadow: inset 0 0 10px rgba(255,140,0,0.1); }
+        .t-num { font-family: 'Space Grotesk'; font-size: clamp(1.8rem, 6vw, 2.4rem); color: var(--primary); font-weight: 800; line-height: 1; }
+        .t-label { font-size: 0.55rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 800; }
         
-        /* Płynne przejście cyfr */
-        .digit-up { animation: digitSlide 0.3s ease-out; }
-        @keyframes digitSlide {
-            0% { transform: translateY(8px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        /* --- SKLEP --- */
+        /* SKLEP */
         .shop-container { display: grid; grid-template-columns: 1fr 360px; gap: 20px; text-align: left; max-width: 1000px; margin: 0 auto; }
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; }
         input { width: 100%; background: #000; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: white; margin-top: 8px; outline: none; }
 
-        @media (max-width: 850px) { 
-            .shop-container { grid-template-columns: 1fr; } 
-            .bg-skin { opacity: 0.08; }
-        }
+        @media (max-width: 850px) { .shop-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body onload="endLoad()">
@@ -151,32 +137,24 @@
 <div id="home" class="page active">
     <img src="https://i.imgur.com/kBq0aVY.png" class="hero-logo">
     <h1 style="font-family: 'Space Grotesk'; font-size: clamp(1.8rem, 8vw, 3.5rem); text-transform: uppercase;">WITAJ NA <span style="color:var(--primary)">DARTHBOX</span></h1>
-    <p style="letter-spacing: 2px; opacity: 0.5; font-weight: 600; font-size: 0.75rem;">NAJLEPSZY SERWER SKYPRAC W POLSCE</p>
-
-    <div class="btn-group">
-        <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-basket"></i> SKLEP SERWERA</button>
-        <a href="https://dc.darthbox.pl" target="_blank" class="btn btn-discord"><i class="fab fa-discord"></i> DOŁĄCZ NA DISCORD</a>
+    
+    <div class="status-bar">
+        <div class="dot"></div>
+        <div class="status-text">GRACZY ONLINE: <span id="p-count" style="color:var(--primary)">...</span></div>
     </div>
 
-    <div class="timer-section">
-        <p style="font-size: 0.65rem; font-weight: 800; color: var(--primary); letter-spacing: 2px;">WIELKI START EDYCJI ZA:</p>
+    <div class="btn-group">
+        <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-basket"></i> SKLEP</button>
+        <a href="https://dc.darthbox.pl" target="_blank" class="btn" style="background:#5865F2; border:none;"><i class="fab fa-discord"></i> DISCORD</a>
+    </div>
+
+    <div style="margin-top: 40px;">
+        <p style="font-size: 0.65rem; font-weight: 800; color: var(--primary); letter-spacing: 2px;">START EDYCJI ZA:</p>
         <div class="timer-grid">
-            <div class="t-card">
-                <div class="t-num-container"><span class="t-num" id="d">00</span></div>
-                <span class="t-label">Dni</span>
-            </div>
-            <div class="t-card">
-                <div class="t-num-container"><span class="t-num" id="h">00</span></div>
-                <span class="t-label">Godz</span>
-            </div>
-            <div class="t-card">
-                <div class="t-num-container"><span class="t-num" id="m">00</span></div>
-                <span class="t-label">Min</span>
-            </div>
-            <div class="t-card active-sek">
-                <div class="t-num-container"><span class="t-num" id="s" style="text-shadow: 0 0 10px var(--primary);">00</span></div>
-                <span class="t-label" style="color:var(--primary)">Sek</span>
-            </div>
+            <div class="t-card"><span class="t-num" id="d">00</span><span class="t-label">Dni</span></div>
+            <div class="t-card"><span class="t-num" id="h">00</span><span class="t-label">Godz</span></div>
+            <div class="t-card"><span class="t-num" id="m">00</span><span class="t-label">Min</span></div>
+            <div class="t-card" style="border-color:var(--primary)"><span class="t-num" id="s" style="text-shadow: 0 0 10px var(--primary);">00</span><span class="t-label">Sek</span></div>
         </div>
     </div>
 </div>
@@ -184,60 +162,54 @@
 <div id="shop" class="page">
     <div class="shop-container">
         <div class="card">
-            <h2 style="font-family: 'Space Grotesk'; margin-bottom: 15px;"><i class="fas fa-coins" style="color:var(--primary)"></i> DOŁADUJ PORTFEL</h2>
-            <label style="font-size: 0.7rem; color: #555; font-weight: 800;">NICK Z GRY</label>
-            <input type="text" id="nick" oninput="updateSkin()" placeholder="Twój nick...">
-            
-            <label style="font-size: 0.7rem; color: #555; font-weight: 800; margin-top: 15px; display: block;">E-MAIL</label>
-            <input type="email" id="email" placeholder="twoj@email.com">
-
+            <h2 style="font-family: 'Space Grotesk'; margin-bottom: 15px;">DOŁADUJ PORTFEL</h2>
+            <input type="text" id="nick" oninput="updateSkin()" placeholder="Twój nick z Minecraft...">
+            <input type="email" placeholder="Twój e-mail...">
             <div style="margin-top: 20px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
-                <span style="font-size: 0.8rem; font-weight: 800;">KWOTA: <span style="color:var(--primary)" id="val">1</span> PLN</span>
-                <input type="range" min="1" max="100" value="1" oninput="sync(this.value)" style="accent-color: var(--primary); margin: 10px 0;">
-                <input type="text" placeholder="KOD RABATOWY...">
+                <span style="font-size: 0.8rem;">KWOTA: <span style="color:var(--primary)" id="val">1</span> PLN</span>
+                <input type="range" min="1" max="100" value="1" oninput="sync(this.value)" style="accent-color: var(--primary);">
+                <input type="text" placeholder="KOD RABATOWY">
             </div>
         </div>
-        <div class="card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="card" style="text-align: center;">
             <img src="https://mc-heads.net/body/MHF_Question" id="skin-img" style="height: 180px; margin-bottom: 15px;">
-            <div style="padding: 12px; width: 100%; background: #000; border-radius: 12px; border: 1px solid var(--primary);">
-                <span id="total" style="font-size: 2rem; font-family: 'Space Grotesk'; color: var(--primary); font-weight: 800;">1.00</span> <span style="color:var(--primary); font-weight: 800;">PLN</span>
+            <div style="padding: 12px; background: #000; border-radius: 12px; border: 1px solid var(--primary);">
+                <span id="total" style="font-size: 2rem; font-weight: 800; color: var(--primary);">1.00</span> <span style="color:var(--primary)">PLN</span>
             </div>
-            <button class="btn" style="width: 100%; margin-top: 15px; background: var(--primary); color: black;" onclick="alert('System płatności wkrótce!')">KUP TERAZ</button>
+            <button class="btn" style="width: 100%; margin-top: 15px; background: var(--primary); color: black;" onclick="alert('Płatności wkrótce!')">KUP TERAZ</button>
         </div>
     </div>
 </div>
 
 <script>
     function endLoad() { setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display='none', 600); }, 1000); }
-    function go(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+    function go(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 
-    let lastVal = { d:"", h:"", m:"", s:"" };
-    function updateTimer() {
-        const target = new Date("Jan 15, 2026 18:00:00").getTime(); // TUTAJ USTAW DATĘ STARTU
-        const now = new Date().getTime();
-        const diff = target - now;
+    // STATUS LIVE
+    function fetchOnline() {
+        fetch('https://api.mcsrvstat.us/2/darthbox.pl')
+            .then(r => r.json())
+            .then(d => { document.getElementById('p-count').innerText = d.online ? d.players.online : "0"; })
+            .catch(() => document.getElementById('p-count').innerText = "0");
+    }
+    setInterval(fetchOnline, 30000); fetchOnline();
 
+    // TIMER
+    let lastV = { d:"", h:"", m:"", s:"" };
+    function updateT() {
+        const target = new Date("Jan 20, 2026 18:00:00").getTime(); // ZMIEŃ DATĘ TUTAJ
+        const diff = target - new Date().getTime();
         if(diff > 0) {
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-            const s = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
-
-            refresh('d', d); refresh('h', h); refresh('m', m); refresh('s', s);
+            const v = {
+                d: Math.floor(diff/86400000).toString().padStart(2,'0'),
+                h: Math.floor((diff/3600000)%24).toString().padStart(2,'0'),
+                m: Math.floor((diff/60000)%60).toString().padStart(2,'0'),
+                s: Math.floor((diff/1000)%60).toString().padStart(2,'0')
+            };
+            for(let k in v) { if(lastV[k] !== v[k]) { document.getElementById(k).innerText = v[k]; lastV[k] = v[k]; } }
         }
     }
-
-    function refresh(id, val) {
-        if(lastVal[id] !== val) {
-            const el = document.getElementById(id);
-            el.innerText = val;
-            el.classList.remove('digit-up');
-            void el.offsetWidth;
-            el.classList.add('digit-up');
-            lastVal[id] = val;
-        }
-    }
-    setInterval(updateTimer, 1000); updateTimer();
+    setInterval(updateT, 1000); updateT();
 
     function sync(v) { document.getElementById('val').innerText = v; document.getElementById('total').innerText = v + ".00"; }
     function updateSkin() { const n = document.getElementById('nick').value; if(n.length > 2) document.getElementById('skin-img').src = `https://mc-heads.net/body/${n}`; }
@@ -245,6 +217,5 @@
 
     particlesJS("particles-js", { "particles": { "number": { "value": 50 }, "color": { "value": "#ff8c00" }, "opacity": { "value": 0.2 }, "size": { "value": 2 }, "line_linked": { "enable": true, "distance": 120, "color": "#ff8c00", "opacity": 0.1 }, "move": { "enable": true, "speed": 1 } } });
 </script>
-
 </body>
 </html>
