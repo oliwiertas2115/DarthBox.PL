@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DarthBox.PL — Serwer Minecraft</title>
+    <title>DarthBox.PL — Najlepszy SkyPrac</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -12,257 +12,217 @@
     <style>
         :root {
             --primary: #ff8c00;
-            --primary-glow: rgba(255, 140, 0, 0.6);
+            --primary-glow: rgba(255, 140, 0, 0.7);
             --bg-deep: #050505;
-            --bg-card: rgba(15, 15, 15, 0.95);
-            --text-main: #f0f0f0;
-            --border: rgba(255, 255, 255, 0.1);
+            --bg-card: rgba(10, 10, 10, 0.9);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
-        body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-deep); color: white; overflow-x: hidden; }
 
-        /* --- PRELOADER --- */
+        /* --- PRELOADER (Ładowanie) --- */
         #loader {
             position: fixed; inset: 0; background: var(--bg-deep);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s;
+            z-index: 9999; transition: 0.8s ease;
         }
-        .loader-logo { width: 120px; animation: pulseLogo 2s infinite ease-in-out; filter: drop-shadow(0 0 20px var(--primary)); }
-        @keyframes pulseLogo { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
-        .loader-bar { width: 200px; height: 3px; background: #111; border-radius: 10px; margin-top: 20px; overflow: hidden; }
-        .loader-progress { width: 0%; height: 100%; background: var(--primary); animation: loadProgress 2s forwards ease-in-out; }
-        @keyframes loadProgress { to { width: 100%; } }
+        .loader-logo { width: 130px; animation: pulse 2s infinite; filter: drop-shadow(0 0 20px var(--primary)); }
+        @keyframes pulse { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.1); filter: brightness(1.5) drop-shadow(0 0 40px var(--primary)); } }
 
-        /* --- BACKGROUND --- */
+        /* --- TŁO I SKINY (To co było lepsze) --- */
         #particles-js { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-        .bg-skin { position: fixed; height: 75vh; opacity: 0.15; z-index: 0; pointer-events: none; filter: drop-shadow(0 0 30px var(--primary-glow)); animation: float 6s ease-in-out infinite; }
-        .skin-left { left: -5%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
-        .skin-right { right: -5%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); animation-delay: 3s; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
+        .bg-skin { 
+            position: fixed; height: 85vh; opacity: 0.25; z-index: 0; pointer-events: none; 
+            filter: drop-shadow(0 0 50px var(--primary-glow)); animation: float 6s infinite ease-in-out; 
+        }
+        .skin-left { left: -8%; bottom: -5%; content: url('https://mc-heads.net/body/XD4min3tor/right'); }
+        .skin-right { right: -8%; bottom: -5%; content: url('https://mc-heads.net/body/Cr4zyP4cik/left'); animation-delay: 3s; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(2deg); } }
 
         /* --- NAWIGACJA --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 15px 5%;
+            position: fixed; top: 0; width: 100%; padding: 20px 6%;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
-            background: rgba(5, 5, 5, 0.85);
+            z-index: 1000; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
         }
-        .logo { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: white; }
-        .logo img { width: 40px; }
+        .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; font-family: 'Space Grotesk'; font-size: 1.5rem; }
+        .nav-logo img { width: 45px; filter: drop-shadow(0 0 10px var(--primary)); }
+
+        /* --- STRONA GŁÓWNA --- */
+        .page { display: none; padding: 160px 5% 50px; min-height: 100vh; position: relative; z-index: 10; text-align: center; }
+        .page.active { display: block; animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+        .hero-logo { width: 220px; margin-bottom: 25px; filter: drop-shadow(0 0 30px var(--primary-glow)); transition: 0.5s; cursor: pointer; }
+        .hero-logo:hover { transform: scale(1.1) rotate(3deg); filter: drop-shadow(0 0 50px var(--primary)); }
+
+        .title { font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 9vw, 5rem); text-transform: uppercase; line-height: 1; margin-bottom: 10px; }
+        .title span { color: var(--primary); text-shadow: 0 0 40px var(--primary-glow); }
 
         /* --- PRZYCISKI --- */
+        .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 35px; }
         .btn {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); color: white;
-            padding: 16px 32px; border-radius: 14px; font-weight: 800; cursor: pointer;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
-            position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: white;
+            padding: 18px 38px; border-radius: 16px; font-weight: 800; cursor: pointer;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 12px;
+            text-decoration: none; font-size: 1rem;
         }
-        .btn:hover { 
-            background: var(--primary); color: black; transform: translateY(-5px) scale(1.05); 
-            box-shadow: 0 15px 40px var(--primary-glow); border-color: var(--primary);
-        }
+        .btn:hover { background: var(--primary); color: black; transform: translateY(-8px) scale(1.05); box-shadow: 0 20px 40px var(--primary-glow); }
+        .btn-discord { background: #5865F2; border: none; }
+        .btn-discord:hover { background: #4752c4; box-shadow: 0 20px 40px rgba(88, 101, 242, 0.4); }
 
-        /* --- PŁYNNY LICZNIK (ANIMACJA CYFR) --- */
-        .timer-wrap { margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .timer-grid { display: flex; gap: 15px; }
-        .t-box { 
-            background: rgba(0,0,0,0.6); padding: 15px; border-radius: 15px; border: 1px solid var(--border);
-            min-width: 85px; height: 95px; backdrop-filter: blur(5px); overflow: hidden;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        /* --- ANIMOWANY LICZNIK --- */
+        .timer-section { margin-top: 60px; }
+        .timer-grid { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
+        .t-card { 
+            background: rgba(0,0,0,0.7); border: 1px solid var(--border); width: 95px; height: 110px;
+            border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; backdrop-filter: blur(10px);
         }
-        .t-num-wrapper { height: 40px; overflow: hidden; position: relative; width: 100%; }
+        .t-num-box { height: 45px; overflow: hidden; position: relative; width: 100%; }
         .t-num { 
-            font-family: 'Space Grotesk'; font-size: 2.5rem; display: block; color: var(--primary);
+            font-family: 'Space Grotesk'; font-size: 2.8rem; color: var(--primary); 
             position: absolute; width: 100%; text-align: center;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
         }
-        .t-lab { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: #555; margin-top: 5px; }
-
-        /* Animacja przesuwania w górę */
+        .t-label { font-size: 0.65rem; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-top: 8px; font-weight: 800; }
+        
         .digit-exit { transform: translateY(-100%); opacity: 0; }
         .digit-entry { transform: translateY(100%); opacity: 0; }
         .digit-active { transform: translateY(0); opacity: 1; }
 
-        /* --- STRONY --- */
-        .page { display: none; padding: 140px 5% 50px; min-height: 100vh; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
-        .page.active { display: block; animation: pageIn 0.8s forwards; }
-        @keyframes pageIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
         /* --- SKLEP --- */
-        .shop-layout { display: grid; grid-template-columns: 1fr 380px; gap: 30px; }
-        .card { background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
-        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: white; margin-top: 5px; outline: none; }
-        input:focus { border-color: var(--primary); }
+        .shop-container { display: grid; grid-template-columns: 1fr 400px; gap: 40px; text-align: left; max-width: 1100px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; padding: 40px; position: relative; overflow: hidden; }
+        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 18px; border-radius: 15px; color: white; margin-top: 10px; transition: 0.3s; }
+        input:focus { border-color: var(--primary); background: rgba(255,140,0,0.05); }
 
-        .slider-box { background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px; margin: 20px 0; border: 1px dashed #333; }
-        input[type=range] { -webkit-appearance: none; background: #222; height: 6px; border-radius: 5px; cursor: pointer; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
+        .custom-slider { -webkit-appearance: none; height: 10px; background: #1a1a1a; border-radius: 10px; margin: 25px 0; }
+        .custom-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: var(--primary); border-radius: 50%; cursor: pointer; box-shadow: 0 0 20px var(--primary); }
 
-        @media (max-width: 900px) { .shop-layout { grid-template-columns: 1fr; } .bg-skin { opacity: 0.05; } }
+        @media (max-width: 950px) { .shop-container { grid-template-columns: 1fr; } .bg-skin { height: 45vh; opacity: 0.15; } }
     </style>
 </head>
-<body onload="init()">
+<body onload="endLoad()">
 
-<div id="loader">
-    <img src="https://i.imgur.com/kBq0aVY.png" class="loader-logo">
-    <div class="loader-bar"><div class="loader-progress"></div></div>
-</div>
+<div id="loader"><img src="https://i.imgur.com/kBq0aVY.png" class="loader-logo"></div>
 
 <div id="particles-js"></div>
 <div class="bg-skin skin-left"></div>
 <div class="bg-skin skin-right"></div>
 
 <nav>
-    <a class="logo" onclick="go('home')">
+    <a class="nav-logo" onclick="go('home')">
         <img src="https://i.imgur.com/kBq0aVY.png">
-        <span style="font-family: 'Space Grotesk'; font-weight: 800;">DARTHBOX<span style="color:var(--primary)">.PL</span></span>
+        <span>DARTHBOX<span style="color:var(--primary)">.PL</span></span>
     </a>
-    <div style="display: flex; gap: 20px; align-items: center;">
-        <a onclick="go('home')" style="cursor:pointer; font-weight:800; font-size:0.8rem; color:#888;">HOME</a>
-        <a onclick="go('shop')" style="cursor:pointer; font-weight:800; font-size:0.8rem; color:#888;">SKLEP</a>
-        <button class="btn" style="padding: 8px 15px; font-size: 0.7rem;" onclick="copyIP()">IP: DARTHBOX.PL</button>
-    </div>
+    <button class="btn" style="padding: 10px 20px; font-size: 0.8rem;" onclick="copyIP()">IP: DARTHBOX.PL</button>
 </nav>
 
-<div id="home" class="page active" style="text-align: center;">
-    <img src="https://i.imgur.com/kBq0aVY.png" style="width: 180px; margin-bottom: 20px; filter: drop-shadow(0 0 20px var(--primary-glow));">
-    <h1 style="font-family: 'Space Grotesk'; font-size: clamp(2rem, 8vw, 4.5rem);">WITAJ NA <span style="color:var(--primary)">DARTHBOX</span></h1>
-    <p style="opacity: 0.5; letter-spacing: 3px; margin-bottom: 40px; font-weight: 600;">NAJLEPSZY SERWER SKYPRAC W POLSCE</p>
+<div id="home" class="page active">
+    <img src="https://i.imgur.com/kBq0aVY.png" class="hero-logo" onclick="go('home')">
+    <h1 class="title">WITAJ NA <span>DARTHBOX</span></h1>
+    <p style="letter-spacing: 5px; opacity: 0.4; font-weight: 800; font-size: 0.9rem;">NAJLEPSZY SERWER SKYPRAC W POLSCE</p>
 
-    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-        <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-cart"></i> PRZEJDŹ DO SKLEPU</button>
-        <a href="https://dc.darthbox.pl" target="_blank" class="btn btn" style="background: #5865F2; border:none;"><i class="fab fa-discord"></i> DISCORD</a>
+    <div class="btn-group">
+        <button class="btn" onclick="go('shop')"><i class="fas fa-shopping-bag"></i> SKLEP SERWERA</button>
+        <a href="https://dc.darthbox.pl" target="_blank" class="btn btn-discord"><i class="fab fa-discord"></i> DOŁĄCZ NA DISCORD</a>
     </div>
 
-    <div class="timer-wrap">
-        <p style="font-size: 0.7rem; font-weight: 800; color: var(--primary); letter-spacing: 2px;">START EDYCJI ZA:</p>
+    <div class="timer-section">
+        <p style="font-size: 0.75rem; font-weight: 800; color: var(--primary); letter-spacing: 3px;">WIELKI START EDYCJI ZA:</p>
         <div class="timer-grid">
-            <div class="t-box">
-                <div class="t-num-wrapper"><span class="t-num digit-active" id="d">00</span></div>
-                <span class="t-lab">Dni</span>
-            </div>
-            <div class="t-box">
-                <div class="t-num-wrapper"><span class="t-num digit-active" id="h">00</span></div>
-                <span class="t-lab">Godz</span>
-            </div>
-            <div class="t-box">
-                <div class="t-num-wrapper"><span class="t-num digit-active" id="m">00</span></div>
-                <span class="t-lab">Min</span>
-            </div>
-            <div class="t-box" style="border-color: var(--primary);">
-                <div class="t-num-wrapper"><span class="t-num digit-active" id="s" style="text-shadow: 0 0 10px var(--primary);">00</span></div>
-                <span class="t-lab">Sek</span>
-            </div>
+            <div class="t-card"><div class="t-num-box"><span class="t-num digit-active" id="d">00</span></div><span class="t-label">Dni</span></div>
+            <div class="t-card"><div class="t-num-box"><span class="t-num digit-active" id="h">00</span></div><span class="t-label">Godz</span></div>
+            <div class="t-card"><div class="t-num-box"><span class="t-num digit-active" id="m">00</span></div><span class="t-label">Min</span></div>
+            <div class="t-card" style="border-color: var(--primary);"><div class="t-num-box"><span class="t-num digit-active" id="s" style="text-shadow: 0 0 15px var(--primary);">00</span></div><span class="t-label">Sek</span></div>
         </div>
     </div>
 </div>
 
 <div id="shop" class="page">
-    <div class="shop-layout">
+    <div class="shop-container">
         <div class="card">
-            <h3 style="margin-bottom: 20px;"><i class="fas fa-coins" style="color:var(--primary)"></i> DOŁADUJ PORTFEL</h3>
-            <label style="font-size: 0.7rem; color: #555;">NICK</label>
-            <input type="text" id="nick" oninput="updatePreview()">
-            <label style="font-size: 0.7rem; color: #555; margin-top: 15px; display: block;">E-MAIL</label>
-            <input type="email" id="email">
-            <div class="slider-box">
-                <span style="color: var(--primary); font-weight: 800;"><span id="val">1</span> PLN</span>
-                <input type="range" min="1" max="100" value="1" oninput="sync(this.value)">
+            <h2 style="font-family: 'Space Grotesk'; margin-bottom: 25px;"><i class="fas fa-wallet" style="color:var(--primary)"></i> DOŁADUJ PORTFEL</h2>
+            <label style="font-size: 0.7rem; font-weight: 800; color: #555;">NICK Z GRY</label>
+            <input type="text" id="nick" placeholder="Twój nick..." oninput="updateSkin()">
+            
+            <label style="font-size: 0.7rem; font-weight: 800; color: #555; margin-top: 20px; display: block;">ADRES E-MAIL</label>
+            <input type="email" id="email" placeholder="email@serwer.pl">
+
+            <div style="margin-top: 30px; background: rgba(0,0,0,0.4); padding: 25px; border-radius: 20px; border: 1px solid var(--border);">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="font-weight: 800;">KWOTA DOŁADOWANIA:</span>
+                    <span style="color: var(--primary); font-weight: 800;"><span id="val">1</span> PLN</span>
+                </div>
+                <input type="range" id="range" min="1" max="100" value="1" class="custom-slider" oninput="sync(this.value)">
+                <input type="text" placeholder="KOD RABATOWY...">
             </div>
-            <label style="font-size: 0.7rem; color: #555;">KOD RABATOWY</label>
-            <input type="text" placeholder="Wpisz kod...">
         </div>
-        <div class="card" style="text-align: center;">
-            <img src="https://mc-heads.net/body/MHF_Question" id="p-img" style="height: 200px; margin-bottom: 20px;">
-            <h2 style="color: var(--primary);"><span id="total">1.00</span> PLN</h2>
-            <button class="btn" style="width: 100%; justify-content: center; background: var(--primary); color: black;" onclick="buyAnim()">ZAKUP</button>
+
+        <div class="card" style="text-align: center; background: rgba(255,140,0,0.02);">
+            <img src="https://mc-heads.net/body/MHF_Question" id="skin-img" style="height: 250px; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); transition: 0.5s;">
+            <h3 id="skin-nick" style="color: #666; margin-bottom: 20px;">Nieznany Gracz</h3>
+            <div style="padding: 20px; background: #000; border-radius: 20px; margin-bottom: 25px; border: 1px solid var(--primary);">
+                <span style="font-size: 0.8rem; color: #444; display: block;">DO ZAPŁATY:</span>
+                <span style="font-size: 3rem; font-family: 'Space Grotesk'; color: var(--primary);"><span id="total">1.00</span> PLN</span>
+            </div>
+            <button class="btn" style="width: 100%; justify-content: center; background: var(--primary); color: black;" onclick="pay()">PROCESUJ ZAKUP</button>
         </div>
     </div>
 </div>
 
 <script>
-    function init() {
-        setTimeout(() => {
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => document.getElementById('loader').style.visibility = 'hidden', 800);
-        }, 2000);
-    }
+    function endLoad() { setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display='none', 800); }, 1500); }
+    function go(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
 
-    function go(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    // --- LOGIKA PŁYNNEGO LICZNIKA ---
+    // TIMER LOGIC
     let lastTime = { d: "", h: "", m: "", s: "" };
-
-    function animateValue(id, newValue) {
+    function animateDigit(id, val) {
+        if (lastTime[id] === val) return;
         const el = document.getElementById(id);
-        if (lastTime[id] === newValue) return;
-
-        // Tworzymy nową cyfrę do wjechania
         const parent = el.parentElement;
-        const nextDigit = document.createElement('span');
-        nextDigit.className = 't-num digit-entry';
-        nextDigit.innerText = newValue;
-        if(id === 's') nextDigit.style.textShadow = "0 0 10px var(--primary)";
-
-        parent.appendChild(nextDigit);
-
-        // Animujemy starą i nową
-        setTimeout(() => {
-            el.className = 't-num digit-exit';
-            nextDigit.className = 't-num digit-active';
-        }, 10);
-
-        // Usuwamy starą cyfrę
-        setTimeout(() => {
-            el.remove();
-            nextDigit.id = id;
-        }, 600);
-
-        lastTime[id] = newValue;
+        const next = document.createElement('span');
+        next.className = 't-num digit-entry';
+        next.innerText = val;
+        if(id === 's') next.style.textShadow = "0 0 15px var(--primary)";
+        parent.appendChild(next);
+        setTimeout(() => { el.className = 't-num digit-exit'; next.className = 't-num digit-active'; }, 20);
+        setTimeout(() => { el.remove(); next.id = id; }, 600);
+        lastTime[id] = val;
     }
 
-    function updateTimer() {
+    function timer() {
         const target = new Date();
         target.setDate(target.getDate() + (6 - target.getDay())); 
         target.setHours(18, 0, 0, 0);
         const diff = target - new Date();
-
-        if (diff > 0) {
-            const d = Math.floor(diff / 86400000).toString().padStart(2, '0');
-            const h = Math.floor((diff / 3600000) % 24).toString().padStart(2, '0');
-            const m = Math.floor((diff / 60000) % 60).toString().padStart(2, '0');
-            const s = Math.floor((diff / 1000) % 60).toString().padStart(2, '0');
-
-            animateValue('d', d);
-            animateValue('h', h);
-            animateValue('m', m);
-            animateValue('s', s);
+        if(diff > 0) {
+            animateDigit('d', Math.floor(diff/86400000).toString().padStart(2,'0'));
+            animateDigit('h', Math.floor((diff/3600000)%24).toString().padStart(2,'0'));
+            animateDigit('m', Math.floor((diff/60000)%60).toString().padStart(2,'0'));
+            animateDigit('s', Math.floor((diff/1000)%60).toString().padStart(2,'0'));
         }
     }
-    setInterval(updateTimer, 1000);
+    setInterval(timer, 1000); timer();
 
-    // --- SKLEP I RESZTA ---
+    // SHOP LOGIC
     function sync(v) { document.getElementById('val').innerText = v; document.getElementById('total').innerText = v + ".00"; }
-    function updatePreview() { 
+    function updateSkin() {
         const n = document.getElementById('nick').value;
-        if(n.length > 2) document.getElementById('p-img').src = `https://mc-heads.net/body/${n}`;
+        if(n.length > 2) {
+            document.getElementById('skin-img').src = `https://mc-heads.net/body/${n}`;
+            document.getElementById('skin-nick').innerText = n;
+            document.getElementById('skin-nick').style.color = "var(--primary)";
+        }
     }
     function copyIP() { navigator.clipboard.writeText("darthbox.pl"); alert("IP SKOPIOWANE!"); }
-    function buyAnim() { alert("Przekierowanie..."); }
+    function pay() { alert("Przekierowanie do płatności..."); }
 
     particlesJS("particles-js", {
-        "particles": {
-            "number": { "value": 80 },
-            "color": { "value": "#ff8c00" },
-            "opacity": { "value": 0.2 },
-            "size": { "value": 3 },
-            "line_linked": { "enable": true, "distance": 150, "color": "#ff8c00", "opacity": 0.1 },
-            "move": { "enable": true, "speed": 1.5 }
-        }
+        "particles": { "number": { "value": 90 }, "color": { "value": "#ff8c00" }, "opacity": { "value": 0.3 }, "size": { "value": 3 }, "line_linked": { "enable": true, "distance": 150, "color": "#ff8c00", "opacity": 0.1 }, "move": { "enable": true, "speed": 1.5 } }
     });
 </script>
 
